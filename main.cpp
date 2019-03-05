@@ -5,7 +5,7 @@ using namespace std;
 
 bool IsKeyword(string s)
 {
-    if(s=="auto"||"double"||"int"||"struct"||"break"||"else"||"long"||"switch"||"case"||"enum"||"register"||"typedef"||"char"||"extern"||"return"||"union"||"const"||"float"||"short"||"unsigned"||"continue"||"for"||"signed"||"void"||"default"||"goto"||"sizeof"||"volatile"||"do"||"if"||"static"||"while")
+    if(s=="auto"||s=="double"||s=="int"||s=="struct"||s=="break"||s=="else"||s=="long"||s=="switch"||s=="case"||s=="enum"||s=="register"||s=="typedef"||s=="char"||s=="extern"||s=="return"||s=="union"||s=="const"||s=="float"||s=="short"||s=="unsigned"||s=="continue"||s=="for"||s=="signed"||s=="void"||s=="default"||s=="goto"||s=="sizeof"||s=="volatile"||s=="do"||s=="if"||s=="static"||s=="while")
     {
         return true;
     }
@@ -112,35 +112,42 @@ bool IsOperator(string s)
     else return false;
 }
 
+string check(string word)
+{
+    if(IsKeyword(word)==true) cout << "Keyword" << endl;
+    else if(IsIdentifier(word)==true) cout << "Identifier" << endl;
+    else if(IsIntConstant(word)==true) cout << "IntegerConstant" << endl;
+    else if(IsFloatConstant(word)==true) cout << "FloatConstant" << endl;
+    else if(IsCharConstant(word)==true) cout << "CharacterConstant" << endl;
+    //else if(IsStringConstant(word)==true) cout << "String" << endl;
+    else if(IsSpecialSymbol(word)==true) cout << "SpecialSymbol" << endl;
+    else if(IsOperator(word)==true) cout << "Operator" << endl;
+    else cout << "----------Error----------" << endl;
+}
+
 int main()
 {
     ifstream ifile;
-    ifile.open("writtenCode");
+    ifile.open("writtenCode.txt");
 
-    string word="";
-
-    char ch;
-    ifile.get(ch);
-    while(!ifile.eof())
+    if(ifile.is_open())
     {
-        if(ch==' ')
-        {
-            if(IsKeyword(word)==true) cout << "Keyword" << endl;
-            else if(IsIdentifier(word)==true) cout << "Identifier" << endl;
-            else if(IsIntConstant(word)==true) cout << "IntegerConstant" << endl;
-            else if(IsFloatConstant(word)==true) cout << "FloatConstant" << endl;
-            else if(IsCharConstant(word)==true) cout << "CharacterConstant" << endl;
-            //else if(IsStringConstant(word)==true) cout << "String" << endl;
-            else if(IsSpecialSymbol(word)==true) cout << "SpecialSymbol" << endl;
-            else if(IsOperator(word)==true) cout << "Operator" << endl;
-            else cout << "----------Error----------" << endl;
-
-            word = "";
-        }
-        else word = word + ch;
-
+        string word="";
+        char ch;
         ifile.get(ch);
+        while(!ifile.eof())
+        {
+            if(ch!=' ')word = word + ch;
+            else if(ch==' ')
+            {
+                check(word);
+                word = "";
+            }
+            ifile.get(ch);
+        }
+        check(word);
     }
+    else cout << "file did not open" << endl;
 
     return 0;
 }
