@@ -1,0 +1,12 @@
+int main()
+{
+	int a;
+	bool b;
+	int i;
+
+	8;
+	8.8;
+	44:
+
+	return 0;
+}
