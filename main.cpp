@@ -3,151 +3,189 @@
 
 using namespace std;
 
-bool IsKeyword(string s)
+//bool var_decl(string)
+//{
+//
+//}
+
+bool bool_literal(string s)
 {
-    if(s=="auto"||s=="double"||s=="int"||s=="struct"||s=="break"||s=="else"||s=="long"||s=="switch"||s=="case"||s=="enum"||s=="register"||s=="typedef"||s=="char"||s=="extern"||s=="return"||s=="union"||s=="const"||s=="float"||s=="short"||s=="unsigned"||s=="continue"||s=="for"||s=="signed"||s=="void"||s=="default"||s=="goto"||s=="sizeof"||s=="volatile"||s=="do"||s=="if"||s=="static"||s=="while")
-    {
-        return true;
-    }
+    if(s=="true" || s=="false") return true;
     else return false;
 }
 
-bool IsIdentifier(string s)
+bool int_literal(string s)
 {
-    int flag=1;
+    bool flag=false;
+
     for(int i=0; i<s.size(); i++)
     {
-        if((int)s[i]>=65 && (int)s[i]<=90 && (int)s[i]>=97 && (int)s[i]<=122 && (int)s[i]>=49 && (int)s[i]<=57 && (int)s[i]==95 && (int)s[0]<49 && (int)s[0]>57 && s[i]!= ' ' && s.size()<32) flag=0;
+        if(s[i]>='0' && s[i]<='9') flag=true;
         else
         {
-            flag=1;
+            flag=false;
             break;
         }
-
-        if(flag==0) return true;
-        else if(flag==1) return false;
-    }
-}
-
-bool IsIntConstant(string s)
-{
-    int flag=0;
-    for(int i=0; i<s.size(); i++)
-    {
-        if((int)s[i]>=48 && (int)s[i]<=57) flag=1;
-        else
-        {
-            flag=0;
-            break;
-        }
-        if(flag==1) return true;
-        else if(flag==0) return false;
     }
 
-}
-
-bool IsFloatConstant(string s)
-{
-    int flag=0, decimalFlag=0;
-    for(int i=0; i<s.size(); i++)
-    {
-        if(s[i]=='.') decimalFlag=decimalFlag+1;
-        if((int)s[i]>=48 && (int)s[i]<=57) flag=1;
-        else
-        {
-            flag=0;
-            break;
-        }
-        if(flag==1 && decimalFlag==1) return true;
-        else if(flag==0) return false;
-    }
-}
-
-bool IsCharConstant(string s)
-{
-    int flag=0;
-    for(int i=0; i<s.size(); i++)
-    {
-        if(s[0]=='\'' && s[s.size()-1]=='\'' && (int)s[i]>=48 && (int)s[i]<=57 && (int)s[i]>=65 && (int)s[i]<=90 && (int)s[i]>=97 && (int)s[i]<=122) flag=1;
-        else
-        {
-            flag=0;
-            break;
-        }
-        if(flag==1 && (s.size()==3 ||s.size()==2)) return true;
-        else if(flag==0) return false;
-    }
-}
-
-bool IsStringConstant(string s)
-{
-    int flag=0;
-    for(int i=0; i<s.size(); i++)
-    {
-        if(s[0]=='\"' && s[s.size()-1]=='\"' && (int)s[i]>=48 && (int)s[i]<=57 && (int)s[i]>=65 && (int)s[i]<=90 && (int)s[i]>=97 && (int)s[i]<=122) flag=1;
-        else
-        {
-            flag=0;
-            break;
-        }
-        if(flag==1 && s.size()>=2) return true;
-        else if(flag==0) return false;
-    }
-}
-
-bool IsString(string s)
-{
-
-}
-
-bool IsSpecialSymbol(string s)
-{
-    if(s=="[","]","{","}","(",")",",",";","*","#") return true;
+    if(flag==true) return true;
     else return false;
+
 }
 
-bool IsOperator(string s)
+bool float_literal(string s)
 {
-    if(s=="<",">",">=","<=","==","+","-","*","/","%","=","++","--","+=","-=","*=","/=","%=","&&","||") return true;
+    int flag1=0, flag2=0;
+
+    for(int i=0; i<s.size(); i++)
+    {
+        if((s[i]>='0' && s[i]<='9') || s[i]=='.') flag1=1;
+        else
+        {
+            flag1=0;
+            break;
+        }
+        if(s[i]=='.') flag2++;
+    }
+
+    if(flag1==1 && flag2==1) return true;
+}
+
+bool type_spec(string s)
+{
+    if(s=="void" || s=="bool" || s=="int" || s=="float") return true;
+}
+
+bool ident(string s)
+{
+    bool flag=false;
+
+    if((s[0]>='0' && s[0]<='9'))
+    {
+        return false;
+    }
+
+    for(int i=0; i<s.size(); i++)
+    {
+        if(((s[i]>='A' && s[i]<='Z')||(s[i]>='a' && s[i]<='z')||s[i]=='_'||(s[i]>='0' && s[i]<='9')))
+        {
+            flag = true;
+        }
+        else
+        {
+            flag = false;
+            break;
+        }
+    }
+
+    if(flag==true) return true;
     else return false;
-}
 
-string check(string word)
-{
-    if(IsKeyword(word)==true) cout << "Keyword" << endl;
-    else if(IsIdentifier(word)==true) cout << "Identifier" << endl;
-    else if(IsIntConstant(word)==true) cout << "IntegerConstant" << endl;
-    else if(IsFloatConstant(word)==true) cout << "FloatConstant" << endl;
-    else if(IsCharConstant(word)==true) cout << "CharacterConstant" << endl;
-    //else if(IsStringConstant(word)==true) cout << "String" << endl;
-    else if(IsSpecialSymbol(word)==true) cout << "SpecialSymbol" << endl;
-    else if(IsOperator(word)==true) cout << "Operator" << endl;
-    else cout << "----------Error----------" << endl;
 }
 
 int main()
 {
+    char ch;
+    string s="";
     ifstream ifile;
-    ifile.open("writtenCode.txt");
+    ofstream ofile;
+    ifile.open("myCode.txt");
+    ofile.open("LexedCode.txt");
 
     if(ifile.is_open())
     {
-        string word="";
-        char ch;
+        cout << "File has been opened" << endl;
         ifile.get(ch);
+
+        //finding type_spec
+//        while(!ifile.eof())
+//        {
+//            if(ch==' ' || ch=='\t' || ch=='\n')
+//            {
+//                if(type_spec(s)==true)
+//                {
+//                    ofile << "type_spec" << ch;
+//                    s = "";
+//                }
+//                else
+//                {
+//                    ofile << s << ch;
+//                    s = "";
+//                }
+//            }
+//            else s = s + ch;
+//
+//            ifile.get(ch);
+//        }
+//        if(ch!=' ' || ch!='\t' || ch!='\n') ofile << ch;
+
+        //finding identifier
+//        while(!ifile.eof())
+//        {
+//            if(ch==',' || ch==';' || ch==' ' || ch=='\n' || ch=='\t' || ch==')')
+//            {
+//                if(ident(s)==true)
+//                {
+//                    ofile << "ident" << ch;
+//                    s = "";
+//                }
+//                else
+//                {
+//                    ofile << s << ch;
+//                    s = "";
+//                }
+//            }
+//            else s = s + ch;
+//
+//            ifile.get(ch);
+//        }
+//        if(ch!=' ' || ch!='\t' || ch!='\n') ofile << ch;
+
+        //combining type_spec and identifier
         while(!ifile.eof())
         {
-            if(ch!=' ')word = word + ch;
-            else if(ch==' ')
+            if(ch==',' || ch==';' || ch==' ' || ch=='\n' || ch=='\t' || ch==')')
             {
-                check(word);
-                word = "";
+                if(type_spec(s)==true)
+                {
+                    ofile << "type_spec" << ch;
+                    s = "";
+                }
+                else if(bool_literal(s)==true)
+                {
+                    ofile << "bool_literal" << ch;
+                    s = "";
+                }
+                else if(float_literal(s)==true)
+                {
+                    ofile << "float_literal" << ch;
+                    s = "";
+                }
+                else if(int_literal(s)==true)
+                {
+                    ofile << "int_literal" << ch;
+                    s = "";
+                }
+                else if(ident(s)==true)
+                {
+                    ofile << "ident" << ch;
+                    s = "";
+                }
+                else
+                {
+                    ofile << s << ch;
+                    s = "";
+                }
             }
+            else s = s + ch;
+
             ifile.get(ch);
         }
-        check(word);
+        if(ch!=' ' || ch!='\t' || ch!='\n') ofile << ch;
+
     }
-    else cout << "file did not open" << endl;
+    else cout << "File did not open" << endl;
+
 
     return 0;
 }
