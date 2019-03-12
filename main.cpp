@@ -3,10 +3,41 @@
 
 using namespace std;
 
-//bool var_decl(string)
+//bool var_decl(string s1, string s2)
 //{
+//    if(s1=="type_spec" && s2=="ident")
+//}
+
+//bool expr()
+//{
+//    if(s1=="bool_literal" || s2=="int_literal" || s3=="float_literal")
+//    if(s1=="ident" || s2=="=" || s3==expr())
 //
 //}
+
+string operators(string s)
+{
+    if(s=="||") return "OR";
+    else if(s=="==") return "EQ";
+    else if(s=="!=") return "NE";
+    else if(s=="<=") return "LE";
+    else if(s==">=") return "GE";
+    else if(s=="<") return "<";
+    else if(s==">") return ">";
+    else if(s=="&&") return "AND";
+    else if(s=="+") return "+";
+    else if(s=="-") return "-";
+    else if(s=="*") return "*";
+    else if(s=="/") return "/";
+    else if(s=="%") return "%";
+    else if(s=="!") return "!";
+    else return "false";
+}
+
+bool ret(string s)
+{
+    if(s=="return") return true;
+}
 
 bool bool_literal(string s)
 {
@@ -60,6 +91,8 @@ bool ident(string s)
 {
     bool flag=false;
 
+    if(s=="return") return false;
+
     if((s[0]>='0' && s[0]<='9'))
     {
         return false;
@@ -90,12 +123,11 @@ int main()
     ifstream ifile;
     ofstream ofile;
     ifile.open("myCode.txt");
-    ofile.open("LexedCode.txt");
+    ofile.open("LexedCode1.txt");
 
     if(ifile.is_open())
     {
         cout << "File has been opened" << endl;
-        ifile.get(ch);
 
         //finding type_spec
 //        while(!ifile.eof())
@@ -141,11 +173,35 @@ int main()
 //        }
 //        if(ch!=' ' || ch!='\t' || ch!='\n') ofile << ch;
 
+        //operators
+//        string w="";
+//        ifile.get(ch);
+//        while(!ifile.eof())
+//        {
+//            w = ch;
+//            if(operators(w)!="false") ofile << operators(w);
+//            ifile.get(ch);
+//            if(ifile.eof()) break;
+//            w = w+ch;
+//            if(operators(w)!="false") ofile << operators(w);
+//        }
+
+//        ifile.open("LexedCode1.txt");
+//        ofile.open("LexedCode2.txt");
+
         //combining type_spec and identifier
+        ifile.get(ch);
         while(!ifile.eof())
         {
-            if(ch==',' || ch==';' || ch==' ' || ch=='\n' || ch=='\t' || ch==')')
+//            if(operators(s)!="false")
+//            {
+//                ofile << operators(s) << ch;
+//                s = "";
+//            }
+
+            if(ch==',' || ch==';' || ch==' ' || ch=='\n' || ch=='\t' || ch==')' || ch=='=' || ch=='('|| ch==')')
             {
+
                 if(type_spec(s)==true)
                 {
                     ofile << "type_spec" << ch;
@@ -185,7 +241,6 @@ int main()
 
     }
     else cout << "File did not open" << endl;
-
 
     return 0;
 }
