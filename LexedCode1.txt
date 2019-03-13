@@ -1,0 +1,7 @@
+type_spec ident ()
+{
+	type_spec ident=int_literal;
+	type_spec ident= bool_literal;
+	type_spec ident= float_literal;
+	return int_literal;
+}

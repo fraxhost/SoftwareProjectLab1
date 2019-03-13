@@ -1,0 +1,7 @@
+type_spec ident ()
+{
+	type_spec ident=expr;
+	type_spec ident= expr;
+	type_spec ident= expr;
+	return expr;
+}

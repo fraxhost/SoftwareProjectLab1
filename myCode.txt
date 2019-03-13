@@ -1,12 +1,8 @@
-int main()
+int main  ()
 {
-	int a;
-	bool b;
-	int i;
+	int      a=5;
+	bool   b=  true;
+	float i=  5.5;
 
-	8;
-	8.8;
-	44:
-
-	return 0;
+	return   0;
 }

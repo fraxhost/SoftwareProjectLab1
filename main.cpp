@@ -34,6 +34,12 @@ string operators(string s)
     else return "false";
 }
 
+bool primary_exp(string s)
+{
+    if(s=="bool_literal" || s=="int_literal" || s=="float_literal") return true;
+    else return false;
+}
+
 bool ret(string s)
 {
     if(s=="return") return true;
@@ -127,7 +133,7 @@ int main()
 
     if(ifile.is_open())
     {
-        cout << "File has been opened" << endl;
+        cout << "LexedCode1 has been opened" << endl;
 
         //finding type_spec
 //        while(!ifile.eof())
@@ -190,16 +196,18 @@ int main()
 //        ofile.open("LexedCode2.txt");
 
         //combining type_spec and identifier
+        int prev_ch='?';
         ifile.get(ch);
         while(!ifile.eof())
         {
-//            if(operators(s)!="false")
-//            {
-//                ofile << operators(s) << ch;
-//                s = "";
-//            }
+            if((prev_ch==' ' && ch==' ')||(prev_ch=='\t' && ch=='\t')||(prev_ch=='\n' && ch=='\n'))
+            {
+                prev_ch = ch;
+                ifile.get(ch);
+                continue;
+            }
 
-            if(ch==',' || ch==';' || ch==' ' || ch=='\n' || ch=='\t' || ch==')' || ch=='=' || ch=='('|| ch==')')
+            if(ch==',' || ch==';' || ch==' ' || ch=='\n' || ch=='\t' || ch=='=' || ch=='('|| ch==')')
             {
 
                 if(type_spec(s)==true)
@@ -235,12 +243,113 @@ int main()
             }
             else s = s + ch;
 
+            prev_ch  = ch;
             ifile.get(ch);
         }
         if(ch!=' ' || ch!='\t' || ch!='\n') ofile << ch;
 
     }
     else cout << "File did not open" << endl;
+
+    ifile.close();
+    ofile.close();
+
+    ifile.open("LexedCode1.txt");
+    ofile.open("LexedCode2.txt");
+
+    if(ifile.is_open())
+    {
+        cout << "LexedCode2 has been opened" << endl;
+
+        string word="";
+        char ch='?';
+        ifile.get(ch);
+
+        while(!ifile.eof())
+        {
+
+            if(ch==',' || ch==';' || ch==' ' || ch=='\n' || ch=='\t' || ch==')' || ch=='=' || ch=='('|| ch==')')
+            {
+                if(primary_exp(word)==true)
+                {
+                    ofile << "expr" << ch;
+                    word="";
+                }
+                else
+                {
+                    ofile << word << ch;
+                    word="";
+                }
+            }
+            else word=word+ch;
+
+            ifile.get(ch);
+        }
+        if(ch!=' ' || ch!='\t' || ch!='\n') ofile << ch;
+    }
+    else cout << "LexedCode2 has not opened" << endl;
+
+    ifile.close();
+    ofile.close();
+
+    ifile.open("LexedCode2.txt");
+    ofile.open("LexedCode3.txt");
+
+    if(ifile.is_open())
+    {
+        cout << "LexedCode3 has been opened" << endl;
+
+        char prev_ch='?';
+        char ch='?';
+        ifile.get(ch);
+
+        while(!ifile.eof())
+        {
+            if(ch=='='||ch=='('||ch==')'||ch==';')
+            {
+                if(prev_ch!=' ') ofile << " ";
+            }
+            if(prev_ch=='='||prev_ch=='('||prev_ch==')'|| prev_ch==';')
+            {
+                if(ch!=' ') ofile << " ";
+            }
+
+            ofile << ch;
+
+            prev_ch=ch;
+            ifile.get(ch);
+        }
+    }
+    else cout << "LexedCode2 has not opened" << endl;
+
+    ifile.close();
+    ofile.close();
+
+//    ifile.open("LexedCode3.txt");
+//    ofile.open("LexedCode4.txt");
+//
+//    string s='?';
+//    string words="";
+//
+//    if(ifile.is_open())
+//    {
+//        cout << "LexedCode4 has been opened" << endl;
+//
+//        ifile >> s;
+//        while(!ifile.eof())
+//        {
+//            if(s==';' || s=='{' || s=='}'|| s=='(' || s==')')
+//            {
+//                if(word=="return ;" || word=="return expr") ofile << return_stmt;
+//                else
+//                {
+//                    ofile << word << ch;
+//                }
+//            }
+//            else if() word = word + ch;
+//        }
+//    }
+//    else cout << "LexedCode4 has not opened" << endl;
 
     return 0;
 }
