@@ -3,41 +3,35 @@
 
 using namespace std;
 
-//bool var_decl(string s1, string s2)
-//{
-//    if(s1=="type_spec" && s2=="ident")
-//}
-
-//bool expr()
-//{
-//    if(s1=="bool_literal" || s2=="int_literal" || s3=="float_literal")
-//    if(s1=="ident" || s2=="=" || s3==expr())
-//
-//}
-
 string operators(string s)
 {
-    if(s=="||") return "OR";
-    else if(s=="==") return "EQ";
-    else if(s=="!=") return "NE";
-    else if(s=="<=") return "LE";
-    else if(s==">=") return "GE";
-    else if(s=="<") return "<";
-    else if(s==">") return ">";
-    else if(s=="&&") return "AND";
-    else if(s=="+") return "+";
-    else if(s=="-") return "-";
-    else if(s=="*") return "*";
-    else if(s=="/") return "/";
-    else if(s=="%") return "%";
-    else if(s=="!") return "!";
-    else return "false";
+    //if(s=="||") return "OR";
+    //if(s=="==") return "EQ";
+//    else if(s=="!=") return "NE";
+//    else if(s=="<=") return "LE";
+//    else if(s==">=") return "GE";
+//    else if(s=="<") return "<";
+//    else if(s==">") return ">";
+//    else if(s=="&&") return "AND";
+//    else if(s=="+") return "+";
+//    else if(s=="-") return "-";
+//    else if(s=="*") return "*";
+//    else if(s=="/") return "/";
+//    else if(s=="%") return "%";
+//    else if(s=="!") return "!";
+//    else return "false";
 }
 
 bool primary_exp(string s)
 {
     if(s=="bool_literal" || s=="int_literal" || s=="float_literal") return true;
     else return false;
+}
+
+int if_else(string s)
+{
+    if(s=="if") return 11;
+    else if(s=="else") return 22;
 }
 
 bool ret(string s)
@@ -207,12 +201,22 @@ int main()
                 continue;
             }
 
-            if(ch==',' || ch==';' || ch==' ' || ch=='\n' || ch=='\t' || ch=='=' || ch=='('|| ch==')')
+            if(ch==',' || ch==';' || ch==' ' || ch=='=' || ch=='\n' || ch=='\t' || ch=='('|| ch==')')
             {
 
                 if(type_spec(s)==true)
                 {
                     ofile << "type_spec" << ch;
+                    s = "";
+                }
+                else if(if_else(s)==11)
+                {
+                    ofile << "if" << ch;
+                    s = "";
+                }
+                else if(if_else(s)==22)
+                {
+                    ofile << "else" << ch;
                     s = "";
                 }
                 else if(bool_literal(s)==true)
@@ -307,11 +311,13 @@ int main()
         {
             if(ch=='='||ch=='('||ch==')'||ch==';')
             {
-                if(prev_ch!=' ') ofile << " ";
+                if(ch=='=' && prev_ch=='=') ;
+                else if(prev_ch!=' ') ofile << " ";
             }
             if(prev_ch=='='||prev_ch=='('||prev_ch==')'|| prev_ch==';')
             {
-                if(ch!=' ') ofile << " ";
+                if(prev_ch=='=' && ch=='=') ;
+                else if(ch!=' ') ofile << " ";
             }
 
             ofile << ch;
@@ -320,7 +326,7 @@ int main()
             ifile.get(ch);
         }
     }
-    else cout << "LexedCode2 has not opened" << endl;
+    else cout << "LexedCode3 has not opened" << endl;
 
     ifile.close();
     ofile.close();
