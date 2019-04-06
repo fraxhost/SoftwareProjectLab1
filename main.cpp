@@ -3,10 +3,154 @@
 
 using namespace std;
 
-string operators(string s)
+string *array_typespec;
+string *array_identifier;
+string *array_boolliteral;
+string *array_intliteral;
+string *array_floatliteral;
+
+void trim_to_size()
+
+//void enlarge_array_general(int *a_size, string array_general[])
+//{
+//    int prev_size = *a_size;
+//    int new_size = (*a_size)*2;
+//    *a_size = new_size;
+//
+//    cout << "BHUL-1" << endl;
+//
+//    string *array_new = new string[new_size];
+//
+//    for(int i=0; i<new_size; i++)
+//    {
+//        array_new[i] = "0";
+//    }
+//
+//    cout << "BHUL-2" << endl;
+//
+//    for(int i=0; i<prev_size; i++)
+//    {
+//        array_new[i]=array_general[i];
+//    }
+//
+//    cout << "BHUL-3" << endl;
+//
+//    array_general = array_new;
+//
+//    cout << "BHUL-4" << endl;
+//
+//}
+
+void enlarge_array_typespec(int *a_size)
 {
-    //if(s=="||") return "OR";
-    //if(s=="==") return "EQ";
+    int prev_size = *a_size;
+    int new_size = (*a_size)*2;
+    *a_size = new_size;
+
+    string *array_new = new string[new_size];
+
+    for(int i=0; i<new_size; i++)
+    {
+        array_new[i] = "0";
+    }
+
+    for(int i=0; i<prev_size; i++)
+    {
+        array_new[i]=array_typespec[i];
+    }
+
+    array_typespec = array_new;
+
+}
+
+void enlarge_array_identifier(int *a_size)
+{
+    int prev_size = *a_size;
+    int new_size = (*a_size)*2;
+    *a_size = new_size;
+
+    string *array_new = new string[new_size];
+
+    for(int i=0; i<new_size; i++)
+    {
+        array_new[i] = "0";
+    }
+
+    for(int i=0; i<prev_size; i++)
+    {
+        array_new[i]=array_identifier[i];
+    }
+
+    array_identifier = array_new;
+}
+
+void enlarge_array_boolliteral(int *a_size)
+{
+    int prev_size = *a_size;
+    int new_size = (*a_size)*2;
+    *a_size = new_size;
+
+    string *array_new = new string[new_size];
+
+    for(int i=0; i<new_size; i++)
+    {
+        array_new[i] = "0";
+    }
+
+    for(int i=0; i<prev_size; i++)
+    {
+        array_new[i]=array_boolliteral[i];
+    }
+
+    array_boolliteral = array_new;
+}
+
+void enlarge_array_intliteral(int *a_size)
+{
+    int prev_size = *a_size;
+    int new_size = (*a_size)*2;
+    *a_size = new_size;
+
+    string *array_new = new string[new_size];
+
+    for(int i=0; i<new_size; i++)
+    {
+        array_new[i] = "0";
+    }
+
+    for(int i=0; i<prev_size; i++)
+    {
+        array_new[i]=array_intliteral[i];
+    }
+
+    array_intliteral = array_new;
+}
+
+void enlarge_array_floatliteral(int *a_size)
+{
+    int prev_size = *a_size;
+    int new_size = (*a_size)*2;
+    *a_size = new_size;
+
+    string *array_new = new string[new_size];
+
+    for(int i=0; i<new_size; i++)
+    {
+        array_new[i] = "0";
+    }
+
+    for(int i=0; i<prev_size; i++)
+    {
+        array_new[i]=array_floatliteral[i];
+    }
+
+    array_floatliteral = array_new;
+}
+
+//string operators(string s)
+//{
+//    if(s=="||") return "OR";
+//    if(s=="==") return "EQ";
 //    else if(s=="!=") return "NE";
 //    else if(s=="<=") return "LE";
 //    else if(s==">=") return "GE";
@@ -20,13 +164,13 @@ string operators(string s)
 //    else if(s=="%") return "%";
 //    else if(s=="!") return "!";
 //    else return "false";
-}
+//}
 
-bool primary_exp(string s)
-{
-    if(s=="bool_literal" || s=="int_literal" || s=="float_literal") return true;
-    else return false;
-}
+//bool primary_exp(string s)
+//{
+//    if(s=="bool_literal" || s=="int_literal" || s=="float_literal") return true;
+//    else return false;
+//}
 
 int if_else(string s)
 {
@@ -118,6 +262,26 @@ bool ident(string s)
 
 int main()
 {
+    int array_typespec_size=1;
+    array_typespec = new string[array_typespec_size];
+    int array_typespec_filleduptoindex=-1;
+
+    int array_identifier_size=1;
+    array_identifier  = new string[100];
+    int array_identifier_filleduptoindex=-1;
+
+    int array_boolliteral_size=1;
+    array_boolliteral = new string[100];
+    int array_boolliteral_filleduptoindex=-1;
+
+    int array_intliteral_size=1;
+    array_intliteral = new string[100];
+    int array_intliteral_filleduptoindex=-1;
+
+    int array_floatliteral_size=1;
+    array_floatliteral = new string[100];
+    int array_floatliteral_filleduptoindex=-1;
+
     char ch;
     string s="";
     ifstream ifile;
@@ -189,7 +353,8 @@ int main()
 //        ifile.open("LexedCode1.txt");
 //        ofile.open("LexedCode2.txt");
 
-        //combining type_spec and identifier
+        //detecting type_spec, identifiers, literals, if and else
+
         int prev_ch='?';
         ifile.get(ch);
         while(!ifile.eof())
@@ -207,6 +372,17 @@ int main()
                 if(type_spec(s)==true)
                 {
                     ofile << "type_spec" << ch;
+
+                    array_typespec_filleduptoindex++;
+
+                    if(array_typespec_filleduptoindex==array_typespec_size-1)
+                    {
+                        enlarge_array_typespec(&array_typespec_size);
+                        cout << "TS-" << array_typespec_size << endl;
+                    }
+
+                    array_typespec[array_typespec_filleduptoindex]=s;
+
                     s = "";
                 }
                 else if(if_else(s)==11)
@@ -222,21 +398,57 @@ int main()
                 else if(bool_literal(s)==true)
                 {
                     ofile << "bool_literal" << ch;
+                    array_boolliteral_filleduptoindex++;
+
+                    if(array_boolliteral_filleduptoindex==array_boolliteral_size-1)
+                    {
+                        enlarge_array_boolliteral(&array_boolliteral_size);
+                        cout << "BL-" << array_boolliteral_size << endl;
+                    }
+
+                    array_boolliteral[array_boolliteral_filleduptoindex]=s;
                     s = "";
                 }
                 else if(float_literal(s)==true)
                 {
                     ofile << "float_literal" << ch;
+                    array_floatliteral_filleduptoindex++;
+
+                    if(array_floatliteral_filleduptoindex==array_floatliteral_size-1)
+                    {
+                        enlarge_array_floatliteral(&array_floatliteral_size);
+                        cout << "FL-" << array_floatliteral_size << endl;
+                    }
+
+                    array_floatliteral[array_floatliteral_filleduptoindex]=s;
                     s = "";
                 }
                 else if(int_literal(s)==true)
                 {
                     ofile << "int_literal" << ch;
+                    array_intliteral_filleduptoindex++;
+
+                    if(array_intliteral_filleduptoindex==array_intliteral_size-1)
+                    {
+                        enlarge_array_intliteral(&array_intliteral_size);
+                        cout << "IL-" << array_intliteral_size << endl;
+                    }
+
+                    array_intliteral[array_intliteral_filleduptoindex]=s;
                     s = "";
                 }
                 else if(ident(s)==true)
                 {
                     ofile << "ident" << ch;
+                    array_identifier_filleduptoindex++;
+
+                    if(array_identifier_filleduptoindex==array_identifier_size-1)
+                    {
+                        enlarge_array_identifier(&array_identifier_size);
+                        cout << "ID-" << array_identifier_size << endl;
+                    }
+
+                    array_identifier[array_identifier_filleduptoindex]=s;
                     s = "";
                 }
                 else
@@ -258,50 +470,52 @@ int main()
     ifile.close();
     ofile.close();
 
+//    ifile.open("LexedCode1.txt");
+//    ofile.open("LexedCode2.txt");
+//
+//    if(ifile.is_open())
+//    {
+//        cout << "LexedCode2 has been opened" << endl;
+//
+//        string word="";
+//        char ch='?';
+//        ifile.get(ch);
+//
+//        while(!ifile.eof())
+//        {
+//
+//            if(ch==',' || ch==';' || ch==' ' || ch=='\n' || ch=='\t' || ch==')' || ch=='=' || ch=='('|| ch==')')
+//            {
+//                if(primary_exp(word)==true)
+//                {
+//                    ofile << "expr" << ch;
+//                    word="";
+//                }
+//                else
+//                {
+//                    ofile << word << ch;
+//                    word="";
+//                }
+//            }
+//            else word=word+ch;
+//
+//            ifile.get(ch);
+//        }
+//        if(ch!=' ' || ch!='\t' || ch!='\n') ofile << ch;
+//    }
+//    else cout << "LexedCode2 has not opened" << endl;
+//
+//    ifile.close();
+//    ofile.close();
+
+
+    //Handled indentation and operator(==)
     ifile.open("LexedCode1.txt");
     ofile.open("LexedCode2.txt");
 
     if(ifile.is_open())
     {
         cout << "LexedCode2 has been opened" << endl;
-
-        string word="";
-        char ch='?';
-        ifile.get(ch);
-
-        while(!ifile.eof())
-        {
-
-            if(ch==',' || ch==';' || ch==' ' || ch=='\n' || ch=='\t' || ch==')' || ch=='=' || ch=='('|| ch==')')
-            {
-                if(primary_exp(word)==true)
-                {
-                    ofile << "expr" << ch;
-                    word="";
-                }
-                else
-                {
-                    ofile << word << ch;
-                    word="";
-                }
-            }
-            else word=word+ch;
-
-            ifile.get(ch);
-        }
-        if(ch!=' ' || ch!='\t' || ch!='\n') ofile << ch;
-    }
-    else cout << "LexedCode2 has not opened" << endl;
-
-    ifile.close();
-    ofile.close();
-
-    ifile.open("LexedCode2.txt");
-    ofile.open("LexedCode3.txt");
-
-    if(ifile.is_open())
-    {
-        cout << "LexedCode3 has been opened" << endl;
 
         char prev_ch='?';
         char ch='?';
@@ -326,7 +540,7 @@ int main()
             ifile.get(ch);
         }
     }
-    else cout << "LexedCode3 has not opened" << endl;
+    else cout << "LexedCode2 has not opened" << endl;
 
     ifile.close();
     ofile.close();
@@ -356,6 +570,18 @@ int main()
 //        }
 //    }
 //    else cout << "LexedCode4 has not opened" << endl;
+
+    for(int i=0; i<=array_boolliteral_filleduptoindex; i++) cout << array_boolliteral[i] << " ";
+    cout << endl;
+    for(int i=0; i<=array_intliteral_filleduptoindex; i++) cout << array_intliteral[i] << " ";
+    cout << endl;
+    for(int i=0; i<=array_floatliteral_filleduptoindex; i++) cout << array_floatliteral[i] << " ";
+    cout << endl;
+    for(int i=0; i<=array_identifier_filleduptoindex; i++) cout << array_identifier[i] << " ";
+    cout << endl;
+    for(int i=0; i<=array_typespec_filleduptoindex; i++) cout << array_typespec[i] << " ";
+    cout << endl;
+
 
     return 0;
 }
