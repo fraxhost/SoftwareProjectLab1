@@ -1,587 +1,604 @@
-#include <iostream>
-#include <fstream>
+#include <bits/stdc++.h>
 
 using namespace std;
 
-string *array_typespec;
-string *array_identifier;
-string *array_boolliteral;
-string *array_intliteral;
-string *array_floatliteral;
+//struct DeclListNode{
+//    string data;
+//    int numberOfChildren;
+//    struct node* children[10];
+//};
+//
+//struct DeclNode{
+//    string data;
+//    struct node* case1children[1];
+//    struct node* case2children[1];
+//};
+//
+//struct VarDecNode{
+//    string data;
+//    struct node* children[3];
+//};
+//
+//struct FuncDecNode{
+//    string data;
+//    struct node* children[6];
+//};
+//
+//struct ParamsNode{
+//    string data;
+//    struct node* children[2];
+//};
+//
+//struct ParamListNode{
+//    string data;
+//    struct node* case1children[3];
+//    struct node* case2children[1];
+//};
+//
+//struct ParamNode{
+//    string data;
+//    struct node* case1children[3];
+//    struct node* case2children[1];
+//};
 
-void trim_to_size()
 
-//void enlarge_array_general(int *a_size, string array_general[])
+
+//struct node* getNode(string data, int numberOfChildren)
 //{
-//    int prev_size = *a_size;
-//    int new_size = (*a_size)*2;
-//    *a_size = new_size;
+//    node* p = new newNode();
 //
-//    cout << "BHUL-1" << endl;
+//    p->data = data;
+//    p->numberOfChildren = numberOfChildren;
 //
-//    string *array_new = new string[new_size];
-//
-//    for(int i=0; i<new_size; i++)
+//    for(int k=0; k<numberOfChildren; k++)
 //    {
-//        array_new[i] = "0";
+//       p->children[k][0] =
 //    }
 //
-//    cout << "BHUL-2" << endl;
-//
-//    for(int i=0; i<prev_size; i++)
+//    for(int i=0; i<k; i++)
 //    {
-//        array_new[i]=array_general[i];
+//        p->child
 //    }
 //
-//    cout << "BHUL-3" << endl;
-//
-//    array_general = array_new;
-//
-//    cout << "BHUL-4" << endl;
-//
-//}
+//    return p;
+//};
 
-void enlarge_array_typespec(int *a_size)
+void program();
+void decl_list();
+bool decl();
+bool var_decl();
+void type_spec();
+bool function_decl();
+bool params();
+bool param_list();
+bool param();
+bool stmt_list();
+bool stmt();
+bool expr_stmt();
+bool while_stmt();
+bool compound_stmt();
+bool local_decls();
+bool local_decl();
+bool if_stmt();
+bool return_stmt();
+bool expr();
+bool arglist();
+bool args();
+
+struct node{
+    string data;
+    struct node* parent;
+    vector <struct node*> children;
+};
+
+int i=0;
+ifstream ifile;
+ofstream ofile;
+
+string untokenedArray[500];
+int filled_untokened_upto=0;
+
+string tokenedArray[500];
+int filled_tokened_upto=0;
+
+bool expr()
 {
-    int prev_size = *a_size;
-    int new_size = (*a_size)*2;
-    *a_size = new_size;
-
-    string *array_new = new string[new_size];
-
-    for(int i=0; i<new_size; i++)
+    if(tokenedArray[i]=="IDENT"&&tokenedArray[i+1]=="ASSIGNMENT"&&expr())
     {
-        array_new[i] = "0";
+        cout << "expr" << endl;
+        i=i+2;
+        return true;
     }
-
-    for(int i=0; i<prev_size; i++)
+    else if(expr()==true&&tokenedArray[i]=="OR"&&expr())
     {
-        array_new[i]=array_typespec[i];
+        cout << "expr" << endl;
+        i=i++;
+        return true;
     }
-
-    array_typespec = array_new;
-
-}
-
-void enlarge_array_identifier(int *a_size)
-{
-    int prev_size = *a_size;
-    int new_size = (*a_size)*2;
-    *a_size = new_size;
-
-    string *array_new = new string[new_size];
-
-    for(int i=0; i<new_size; i++)
+    else if(expr()==true&&tokenedArray[i]=="EQ"&&expr())
     {
-        array_new[i] = "0";
+        cout << "expr" << endl;
+        i=i++;
+        return true;
     }
-
-    for(int i=0; i<prev_size; i++)
+    else if(expr()==true&&tokenedArray[i]=="NE"&&expr())
     {
-        array_new[i]=array_identifier[i];
+        cout << "expr" << endl;
+        i=i++;
+        return true;
     }
-
-    array_identifier = array_new;
-}
-
-void enlarge_array_boolliteral(int *a_size)
-{
-    int prev_size = *a_size;
-    int new_size = (*a_size)*2;
-    *a_size = new_size;
-
-    string *array_new = new string[new_size];
-
-    for(int i=0; i<new_size; i++)
+    else if(expr()==true&&tokenedArray[i]=="LE"&&expr())
     {
-        array_new[i] = "0";
+        cout << "expr" << endl;
+        i=i++;
+        return true;
     }
-
-    for(int i=0; i<prev_size; i++)
+    else if(expr()==true&&tokenedArray[i]=="LESSER"&&expr())
     {
-        array_new[i]=array_boolliteral[i];
+        cout << "expr" << endl;
+        i=i++;
+        return true;
     }
-
-    array_boolliteral = array_new;
-}
-
-void enlarge_array_intliteral(int *a_size)
-{
-    int prev_size = *a_size;
-    int new_size = (*a_size)*2;
-    *a_size = new_size;
-
-    string *array_new = new string[new_size];
-
-    for(int i=0; i<new_size; i++)
+    else if(expr()==true&&tokenedArray[i]=="GE"&&expr())
     {
-        array_new[i] = "0";
+        cout << "expr" << endl;
+        i=i++;
+        return true;
     }
-
-    for(int i=0; i<prev_size; i++)
+    else if(expr()==true&&tokenedArray[i]=="GREATER"&&expr())
     {
-        array_new[i]=array_intliteral[i];
+        cout << "expr" << endl;
+        i=i++;
+        return true;
     }
-
-    array_intliteral = array_new;
-}
-
-void enlarge_array_floatliteral(int *a_size)
-{
-    int prev_size = *a_size;
-    int new_size = (*a_size)*2;
-    *a_size = new_size;
-
-    string *array_new = new string[new_size];
-
-    for(int i=0; i<new_size; i++)
+    else if(expr()==true&&tokenedArray[i]=="AND"&&expr())
     {
-        array_new[i] = "0";
+        cout << "expr" << endl;
+        i=i++;
+        return true;
     }
-
-    for(int i=0; i<prev_size; i++)
+    else if(expr()==true&&tokenedArray[i]=="ADD"&&expr())
     {
-        array_new[i]=array_floatliteral[i];
+        cout << "expr" << endl;
+        i=i++;
+        return true;
     }
-
-    array_floatliteral = array_new;
-}
-
-//string operators(string s)
-//{
-//    if(s=="||") return "OR";
-//    if(s=="==") return "EQ";
-//    else if(s=="!=") return "NE";
-//    else if(s=="<=") return "LE";
-//    else if(s==">=") return "GE";
-//    else if(s=="<") return "<";
-//    else if(s==">") return ">";
-//    else if(s=="&&") return "AND";
-//    else if(s=="+") return "+";
-//    else if(s=="-") return "-";
-//    else if(s=="*") return "*";
-//    else if(s=="/") return "/";
-//    else if(s=="%") return "%";
-//    else if(s=="!") return "!";
-//    else return "false";
-//}
-
-//bool primary_exp(string s)
-//{
-//    if(s=="bool_literal" || s=="int_literal" || s=="float_literal") return true;
-//    else return false;
-//}
-
-int if_else(string s)
-{
-    if(s=="if") return 11;
-    else if(s=="else") return 22;
-}
-
-bool ret(string s)
-{
-    if(s=="return") return true;
-}
-
-bool bool_literal(string s)
-{
-    if(s=="true" || s=="false") return true;
-    else return false;
-}
-
-bool int_literal(string s)
-{
-    bool flag=false;
-
-    for(int i=0; i<s.size(); i++)
+    else if(expr()==true&&tokenedArray[i]=="SUBTRACT"&&expr())
     {
-        if(s[i]>='0' && s[i]<='9') flag=true;
-        else
-        {
-            flag=false;
-            break;
-        }
+        cout << "expr" << endl;
+        i=i++;
+        return true;
     }
-
-    if(flag==true) return true;
-    else return false;
-
-}
-
-bool float_literal(string s)
-{
-    int flag1=0, flag2=0;
-
-    for(int i=0; i<s.size(); i++)
+    else if(expr()==true&&tokenedArray[i]=="MULTIPLICATION"&&expr())
     {
-        if((s[i]>='0' && s[i]<='9') || s[i]=='.') flag1=1;
-        else
-        {
-            flag1=0;
-            break;
-        }
-        if(s[i]=='.') flag2++;
+        cout << "expr" << endl;
+        i=i++;
+        return true;
     }
-
-    if(flag1==1 && flag2==1) return true;
-}
-
-bool type_spec(string s)
-{
-    if(s=="void" || s=="bool" || s=="int" || s=="float") return true;
-}
-
-bool ident(string s)
-{
-    bool flag=false;
-
-    if(s=="return") return false;
-
-    if((s[0]>='0' && s[0]<='9'))
+    else if(expr()==true&&tokenedArray[i]=="DIVISION"&&expr())
+    {
+        cout << "expr" << endl;
+        i=i++;
+        return true;
+    }
+    else if(expr()==true&&tokenedArray[i]=="MODULUS"&&expr())
+    {
+        cout << "expr" << endl;
+        i=i++;
+        return true;
+    }
+    else if(tokenedArray[i]=="NOT"&&expr()==true)
+    {
+        cout << "expr" << endl;
+        i=i++;
+        return true;
+    }
+    else if(tokenedArray[i]=="SUBTRACT"&&expr()==true)
+    {
+        cout << "expr" << endl;
+        i=i++;
+        return true;
+    }
+    else if(tokenedArray[i]=="ADD"&&expr()==true)
+    {
+        cout << "expr" << endl;
+        i=i++;
+        return true;
+    }
+    else if(tokenedArray[i]=="FIRST_BRACKET_OPEN"&&expr()==true&&tokenedArray[i]=="FIRST_BRACKET_CLOSE")
+    {
+        cout << "expr" << endl;
+        i=i+2;
+        return true;
+    }
+    else if(tokenedArray[i]=="IDENT")
+    {
+        cout << "expr" << endl;
+        i=i++;
+        return true;
+    }
+    else if(tokenedArray[i]=="IDENT"&&tokenedArray[i]=="FIRST_BRACKET_OPEN"&&args()&&tokenedArray[i]=="FIRST_BRACKET_CLOSE")
+    {
+        cout << "expr" << endl;
+        i=i++;
+        return true;
+    }
+    else
     {
         return false;
     }
+}
 
-    for(int i=0; i<s.size(); i++)
+bool arg_list()
+{
+    if(expr()==true)
     {
-        if(((s[i]>='A' && s[i]<='Z')||(s[i]>='a' && s[i]<='z')||s[i]=='_'||(s[i]>='0' && s[i]<='9')))
+        cout << "arg_list" << endl;
+        return true;
+    }
+    else if(arg_list()==true&&tokenedArray[i]=="COMA"&&expr()==true)
+    {
+        cout << "arg_list" << endl;
+        i++;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool args()
+{
+    arg_list();
+    return true;
+}
+
+bool return_stmt()
+{
+    if(tokenedArray[i]=="RETURN"&&tokenedArray[i+1]=="SEMICOLON")
+    {
+        cout << "return_stmt" << endl;
+        i=i+2;
+        return true;
+    }
+    else if(tokenedArray[i]=="RETURN"&&expr()&&tokenedArray[i+1]=="SEMICOLON")
+    {
+        cout << "return_stmt" << endl;
+        i=i+2;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool break_stmt()
+{
+    if(tokenedArray[i]=="BREAK" && tokenedArray[i+1]=="SEMICOLON")
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool if_stmt()
+{
+    if(tokenedArray[i]=="IF" && tokenedArray[i+1]=="FIRST_BRACKET_OPEN" && expr() && tokenedArray[i+2]=="FIRST_BRACKET_CLOSE" && stmt() && tokenedArray[i+3]=="ELSE" && stmt())
+    {
+        cout << "if_stmt" << endl;
+        i=i+3;
+        return true;
+    }
+    else if(tokenedArray[i]=="IF" && tokenedArray[i+1]=="FIRST_BRACKET_OPEN" && expr() && tokenedArray[i+2]=="FIRST_BRACKET_CLOSE" && stmt())
+    {
+        cout << "if_stmt" << endl;
+        i=i+3;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool local_decl()
+{
+    if(tokenedArray[i+1]=="type_spec" && tokenedArray[i+2]=="IDENT" && tokenedArray[i+3]=="SEMICOLON")
+    {
+        cout << "local_decl" << endl;
+        i=i+4;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool local_decls()
+{
+    cout << "local_decls" << endl;
+
+    if(local_decl()==false)
+    {
+        return true;
+    }
+    else
+    {
+        local_decls();
+    }
+}
+
+bool compound_stmt()
+{
+    if(tokenedArray[i]=="SECOND_BRACKET_OPEN"  && local_decls()==true && stmt_list() && tokenedArray[i]=="SECOND_BRACKET_CLOSE")
+    {
+        cout << "compound statement" << endl;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool while_stmt()
+{
+    if(tokenedArray[i]=="WHILE"&&tokenedArray[i]=="FIRST_BRACKET_OPEN"&&expr()&&tokenedArray[i]=="FIRST_BRACKET_CLOSE"&&stmt()==true)
+    {
+        cout << "while_stmt" << endl;
+        i=i+3;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool expr_stmt()
+{
+    if(tokenedArray[i]=="SEMICOLON")
+    {
+        cout << "expr_stmt" << endl;
+        i++;
+        return true;
+    }
+    else if(expr() && tokenedArray[i]=="SEMICOLON")
+    {
+        cout << "expr stmt" << endl;
+        i++;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool stmt()
+{
+    if(expr_stmt()==true || compound_stmt()==true || if_stmt()==true || while_stmt()==true || return_stmt()==true || break_stmt()==true)
+    {
+        cout << "stmt" << endl;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool stmt_list()
+{
+    if(stmt()==false)
+    {
+        cout << "stmt_list" << endl;
+        return true;
+    }
+    else
+    {
+        stmt_list();
+    }
+}
+
+bool param()
+{
+    if(tokenedArray[i]=="type_spec" && tokenedArray[i+1]=="IDENT")
+    {
+        cout << "param" << endl;
+        type_spec();
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+int param_list_flag=0;
+
+bool param_list()
+{
+    if(param_list_flag==0)
+    {
+        cout << "param_list" << endl;
+        param_list_flag=1;
+    }
+
+    if(param()==true)
+    {
+        if(tokenedArray[i]=="COMA")
         {
-            flag = true;
+            i++;
+            param_list();
         }
         else
         {
-            flag = false;
-            break;
+            param_list_flag=0;
+            return true;
         }
     }
-
-    if(flag==true) return true;
     else return false;
+}
 
+bool params()
+{
+    cout << "params" << endl;
+
+    if(tokenedArray[i]=="VOID" && tokenedArray[i+1]=="SECOND_BRACKET_CLOSE")
+    {
+        cout << "VOID" << endl;
+        i=i+2;
+        return true;
+    }
+    else if(param_list()==false)
+    {
+        return false;
+    }
+}
+
+bool function_decl()
+{
+    cout << "function_decl" << endl;
+
+    if(params()==true && compound_stmt()==true)
+    {
+        return true;
+    }
+    else if(params()==true && compound_stmt()==false)
+    {
+        cout << "--Incorrect Parameter--" << endl;
+        return false;
+    }
+    else if(params()==false && compound_stmt()==true)
+    {
+        cout << "--Incorrect Compound Statement--" << endl;
+        return false;
+    }
+    else
+    {
+        cout << "--Incorrect Function Declaration--" << endl;
+        return false;
+    }
+}
+
+void type_spec()
+{
+    cout << "type_spec" << endl << untokenedArray[i] << endl;
+    i++;
+    cout << "IDENT" << endl << untokenedArray[i] << endl;
+    i++;
+
+    return;
+}
+
+bool var_decl()
+{
+    cout << "var_decl" << endl;
+
+    type_spec();
+
+    return true;
+}
+
+bool decl()
+{
+    if(tokenedArray[i]=="type_spec" && tokenedArray[i+1]=="IDENT" && (tokenedArray[i+2]=="SEMICOLON"||tokenedArray[i+2]=="FIRST_BRACKET_OPEN"))
+    {
+        if(tokenedArray[i+2]=="SEMICOLON")
+        {
+            cout << "decl" << endl;
+            var_decl();
+            i++;
+            return true;
+        }
+        else if(tokenedArray[i+2]=="FIRST_BRACKET_OPEN")
+        {
+            cout << "decl" << endl;
+            i=i+3;
+            function_decl();
+            return true;
+        }
+    }
+    else
+    {
+        return false;
+    }
+}
+
+int decl_list_flag=0;
+
+void decl_list()
+{
+    if(decl_list_flag==0)
+    {
+        cout << "decl_list" << endl;
+        decl_list_flag=1;
+    }
+
+    if(decl()==false)
+    {
+        //decl_list_flag=0;
+        return;
+    }
+
+    decl_list();
+}
+
+//    if(tokenedArray[i]=="type_spec" && tokenedArray[i+1]=="IDENT")
+//    {
+//        i=i+2;
+//        if(tokenedArray[i]==";") decl_list(i);
+//        else if
+//    }
+
+
+void program()
+{
+    cout << "program" << endl;
+
+    i++;
+
+    decl_list();
 }
 
 int main()
 {
-    int array_typespec_size=1;
-    array_typespec = new string[array_typespec_size];
-    int array_typespec_filleduptoindex=-1;
-
-    int array_identifier_size=1;
-    array_identifier  = new string[100];
-    int array_identifier_filleduptoindex=-1;
-
-    int array_boolliteral_size=1;
-    array_boolliteral = new string[100];
-    int array_boolliteral_filleduptoindex=-1;
-
-    int array_intliteral_size=1;
-    array_intliteral = new string[100];
-    int array_intliteral_filleduptoindex=-1;
-
-    int array_floatliteral_size=1;
-    array_floatliteral = new string[100];
-    int array_floatliteral_filleduptoindex=-1;
-
-    char ch;
-    string s="";
-    ifstream ifile;
-    ofstream ofile;
-    ifile.open("myCode.txt");
-    ofile.open("LexedCode1.txt");
+    ifile.open("Hudai.txt");
+    ofile.open("AST.txt");
 
     if(ifile.is_open())
     {
-        cout << "LexedCode1 has been opened" << endl;
+        cout << "Hudai file has been opened" << endl;
 
-        //finding type_spec
-//        while(!ifile.eof())
-//        {
-//            if(ch==' ' || ch=='\t' || ch=='\n')
-//            {
-//                if(type_spec(s)==true)
-//                {
-//                    ofile << "type_spec" << ch;
-//                    s = "";
-//                }
-//                else
-//                {
-//                    ofile << s << ch;
-//                    s = "";
-//                }
-//            }
-//            else s = s + ch;
-//
-//            ifile.get(ch);
-//        }
-//        if(ch!=' ' || ch!='\t' || ch!='\n') ofile << ch;
+        string untokened, tokened;
 
-        //finding identifier
-//        while(!ifile.eof())
-//        {
-//            if(ch==',' || ch==';' || ch==' ' || ch=='\n' || ch=='\t' || ch==')')
-//            {
-//                if(ident(s)==true)
-//                {
-//                    ofile << "ident" << ch;
-//                    s = "";
-//                }
-//                else
-//                {
-//                    ofile << s << ch;
-//                    s = "";
-//                }
-//            }
-//            else s = s + ch;
-//
-//            ifile.get(ch);
-//        }
-//        if(ch!=' ' || ch!='\t' || ch!='\n') ofile << ch;
 
-        //operators
-//        string w="";
-//        ifile.get(ch);
-//        while(!ifile.eof())
-//        {
-//            w = ch;
-//            if(operators(w)!="false") ofile << operators(w);
-//            ifile.get(ch);
-//            if(ifile.eof()) break;
-//            w = w+ch;
-//            if(operators(w)!="false") ofile << operators(w);
-//        }
 
-//        ifile.open("LexedCode1.txt");
-//        ofile.open("LexedCode2.txt");
-
-        //detecting type_spec, identifiers, literals, if and else
-
-        int prev_ch='?';
-        ifile.get(ch);
         while(!ifile.eof())
         {
-            if((prev_ch==' ' && ch==' ')||(prev_ch=='\t' && ch=='\t')||(prev_ch=='\n' && ch=='\n'))
-            {
-                prev_ch = ch;
-                ifile.get(ch);
-                continue;
-            }
+            ifile >> untokened >> tokened;
 
-            if(ch==',' || ch==';' || ch==' ' || ch=='=' || ch=='\n' || ch=='\t' || ch=='('|| ch==')')
-            {
+            untokenedArray[filled_untokened_upto]=untokened;
+            filled_untokened_upto++;
 
-                if(type_spec(s)==true)
-                {
-                    ofile << "type_spec" << ch;
-
-                    array_typespec_filleduptoindex++;
-
-                    if(array_typespec_filleduptoindex==array_typespec_size-1)
-                    {
-                        enlarge_array_typespec(&array_typespec_size);
-                        cout << "TS-" << array_typespec_size << endl;
-                    }
-
-                    array_typespec[array_typespec_filleduptoindex]=s;
-
-                    s = "";
-                }
-                else if(if_else(s)==11)
-                {
-                    ofile << "if" << ch;
-                    s = "";
-                }
-                else if(if_else(s)==22)
-                {
-                    ofile << "else" << ch;
-                    s = "";
-                }
-                else if(bool_literal(s)==true)
-                {
-                    ofile << "bool_literal" << ch;
-                    array_boolliteral_filleduptoindex++;
-
-                    if(array_boolliteral_filleduptoindex==array_boolliteral_size-1)
-                    {
-                        enlarge_array_boolliteral(&array_boolliteral_size);
-                        cout << "BL-" << array_boolliteral_size << endl;
-                    }
-
-                    array_boolliteral[array_boolliteral_filleduptoindex]=s;
-                    s = "";
-                }
-                else if(float_literal(s)==true)
-                {
-                    ofile << "float_literal" << ch;
-                    array_floatliteral_filleduptoindex++;
-
-                    if(array_floatliteral_filleduptoindex==array_floatliteral_size-1)
-                    {
-                        enlarge_array_floatliteral(&array_floatliteral_size);
-                        cout << "FL-" << array_floatliteral_size << endl;
-                    }
-
-                    array_floatliteral[array_floatliteral_filleduptoindex]=s;
-                    s = "";
-                }
-                else if(int_literal(s)==true)
-                {
-                    ofile << "int_literal" << ch;
-                    array_intliteral_filleduptoindex++;
-
-                    if(array_intliteral_filleduptoindex==array_intliteral_size-1)
-                    {
-                        enlarge_array_intliteral(&array_intliteral_size);
-                        cout << "IL-" << array_intliteral_size << endl;
-                    }
-
-                    array_intliteral[array_intliteral_filleduptoindex]=s;
-                    s = "";
-                }
-                else if(ident(s)==true)
-                {
-                    ofile << "ident" << ch;
-                    array_identifier_filleduptoindex++;
-
-                    if(array_identifier_filleduptoindex==array_identifier_size-1)
-                    {
-                        enlarge_array_identifier(&array_identifier_size);
-                        cout << "ID-" << array_identifier_size << endl;
-                    }
-
-                    array_identifier[array_identifier_filleduptoindex]=s;
-                    s = "";
-                }
-                else
-                {
-                    ofile << s << ch;
-                    s = "";
-                }
-            }
-            else s = s + ch;
-
-            prev_ch  = ch;
-            ifile.get(ch);
+            tokenedArray[filled_tokened_upto]=tokened;
+            filled_tokened_upto++;
         }
-        if(ch!=' ' || ch!='\t' || ch!='\n') ofile << ch;
 
     }
-    else cout << "File did not open" << endl;
-
-    ifile.close();
-    ofile.close();
-
-//    ifile.open("LexedCode1.txt");
-//    ofile.open("LexedCode2.txt");
-//
-//    if(ifile.is_open())
-//    {
-//        cout << "LexedCode2 has been opened" << endl;
-//
-//        string word="";
-//        char ch='?';
-//        ifile.get(ch);
-//
-//        while(!ifile.eof())
-//        {
-//
-//            if(ch==',' || ch==';' || ch==' ' || ch=='\n' || ch=='\t' || ch==')' || ch=='=' || ch=='('|| ch==')')
-//            {
-//                if(primary_exp(word)==true)
-//                {
-//                    ofile << "expr" << ch;
-//                    word="";
-//                }
-//                else
-//                {
-//                    ofile << word << ch;
-//                    word="";
-//                }
-//            }
-//            else word=word+ch;
-//
-//            ifile.get(ch);
-//        }
-//        if(ch!=' ' || ch!='\t' || ch!='\n') ofile << ch;
-//    }
-//    else cout << "LexedCode2 has not opened" << endl;
-//
-//    ifile.close();
-//    ofile.close();
-
-
-    //Handled indentation and operator(==)
-    ifile.open("LexedCode1.txt");
-    ofile.open("LexedCode2.txt");
-
-    if(ifile.is_open())
+    else
     {
-        cout << "LexedCode2 has been opened" << endl;
-
-        char prev_ch='?';
-        char ch='?';
-        ifile.get(ch);
-
-        while(!ifile.eof())
-        {
-            if(ch=='='||ch=='('||ch==')'||ch==';')
-            {
-                if(ch=='=' && prev_ch=='=') ;
-                else if(prev_ch!=' ') ofile << " ";
-            }
-            if(prev_ch=='='||prev_ch=='('||prev_ch==')'|| prev_ch==';')
-            {
-                if(prev_ch=='=' && ch=='=') ;
-                else if(ch!=' ') ofile << " ";
-            }
-
-            ofile << ch;
-
-            prev_ch=ch;
-            ifile.get(ch);
-        }
+        cout << "Lexing file has not opened" << endl;
     }
-    else cout << "LexedCode2 has not opened" << endl;
 
-    ifile.close();
-    ofile.close();
-
-//    ifile.open("LexedCode3.txt");
-//    ofile.open("LexedCode4.txt");
-//
-//    string s='?';
-//    string words="";
-//
-//    if(ifile.is_open())
-//    {
-//        cout << "LexedCode4 has been opened" << endl;
-//
-//        ifile >> s;
-//        while(!ifile.eof())
-//        {
-//            if(s==';' || s=='{' || s=='}'|| s=='(' || s==')')
-//            {
-//                if(word=="return ;" || word=="return expr") ofile << return_stmt;
-//                else
-//                {
-//                    ofile << word << ch;
-//                }
-//            }
-//            else if() word = word + ch;
-//        }
-//    }
-//    else cout << "LexedCode4 has not opened" << endl;
-
-    for(int i=0; i<=array_boolliteral_filleduptoindex; i++) cout << array_boolliteral[i] << " ";
-    cout << endl;
-    for(int i=0; i<=array_intliteral_filleduptoindex; i++) cout << array_intliteral[i] << " ";
-    cout << endl;
-    for(int i=0; i<=array_floatliteral_filleduptoindex; i++) cout << array_floatliteral[i] << " ";
-    cout << endl;
-    for(int i=0; i<=array_identifier_filleduptoindex; i++) cout << array_identifier[i] << " ";
-    cout << endl;
-    for(int i=0; i<=array_typespec_filleduptoindex; i++) cout << array_typespec[i] << " ";
-    cout << endl;
-
+    if(tokenedArray[i]=="program") program();
 
     return 0;
 }
