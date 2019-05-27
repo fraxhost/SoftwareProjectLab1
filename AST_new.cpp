@@ -353,7 +353,6 @@ bool stmt()
 //    }
     else if(while_stmt()==true)
     {
-        cout << "aaaaaaaaaaaaaaaaaaa" << endl;
         return true;
     }
     else if(return_stmt()==true)
@@ -624,6 +623,37 @@ bool if_stmt()
     {
         return false;
     }
+
+    //new
+    if(tokenedArray[i]=="IF" && tokenedArray[i+1]=="FIRST_BRACKET_OPEN")
+    {
+        if(expr()==true)
+        {
+            if(tokenedArray[i+2]=="FIRST_BRACKET_CLOSE")
+            {
+                if(stmt()==true)
+                {
+                    if(tokenedArray[i+3]=="ELSE" && stmt()==true)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        cout << "if_stmt" << endl;
+        i=i+3;
+        return true;
+    }
+    else if(tokenedArray[i]=="IF" && tokenedArray[i+1]=="FIRST_BRACKET_OPEN" && expr() && tokenedArray[i+2]=="FIRST_BRACKET_CLOSE" && stmt())
+    {
+        cout << "if_stmt" << endl;
+        i=i+3;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 
@@ -714,7 +744,7 @@ bool break_stmt_print()
 
 bool expr_print()
 {
-    if(tokenedArray[i+1]=="IDENT"&&tokenedArray[i+2]=="ASSIGNMENT"&&tokenedArray[i+3]=="IDENT"&&(tokenedArray[i+4]=="ADD"||tokenedArray[i+4]=="SUBTRACT"||tokenedArray[i+4]=="MULTIPLICATION"||tokenedArray[i+4]=="DIVISION")&&tokenedArray[i+5]=="IDENT"&&tokenedArray[i+6]=="SEMICOLON")
+    if(tokenedArray[i+1]=="IDENT"&&tokenedArray[i+2]=="ASSIGNMENT"&&tokenedArray[i+3]=="IDENT"&&(tokenedArray[i+4]=="ADD"||tokenedArray[i+4]=="SUBTRACT"||tokenedArray[i+4]=="MULTIPLICATION"||tokenedArray[i+4]=="DIVISION")&&tokenedArray[i+5]=="IDENT")
     {
         cout << "stmt" << endl;
         cout << "expr_stmt" << endl;
@@ -744,7 +774,7 @@ bool expr_print()
         return true;
 
     }
-    else if(tokenedArray[i+1]=="IDENT"&&tokenedArray[i+2]=="ASSIGNMENT"&&tokenedArray[i+3]=="IDENT"&&tokenedArray[i+4]=="SEMICOLON")
+    else if(tokenedArray[i+1]=="IDENT"&&tokenedArray[i+2]=="ASSIGNMENT"&&tokenedArray[i+3]=="IDENT")
     {
         cout << "stmt" << endl;
         cout << "expr_stmt" << endl;
