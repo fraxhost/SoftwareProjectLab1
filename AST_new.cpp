@@ -39,12 +39,25 @@ bool expr_print();
 bool arglist();
 bool args();
 
-//struct node{
-//    string data;
-//    struct node* parent;
-//    vector <struct node*> children;
-//};
+struct node{
+    string data;
+    node* parent;
+    vector <struct node*> children;
+};
 
+node* leaf = new node;
+node* root = new node;
+node* decl_list_leaf = new node;
+
+node* create_newNode(string data)
+{
+    node* temp = new node;
+    temp->data = data;
+    temp->parent = NULL;
+    //temp->children = NULL;
+
+    return temp;
+}
 
 int i=0;
 ifstream ifile;
@@ -92,7 +105,13 @@ int main()
 
 void program()
 {
+    leaf = root;
+
     cout << "program" << endl;
+
+    leaf->data="program";
+    leaf->parent=NULL;
+
     i++;
 
     while(true)
@@ -111,14 +130,27 @@ void program()
 
 
 int decl_list_flag=0;
+int z=0;
 void decl_list()
 {
     if(decl_list_flag==0)
     {
+        vector <node*> tempVec;
+        //tree
+        node* temp = create_newNode("decl_list");
+        tempVec.push_back(temp);
+        leaf->children=tempVec;
+        temp->parent=leaf;
+
+        decl_list_leaf = temp;
+
         cout << "decl_list" << endl;
 
         decl_list_flag=1;
     }
+
+    leaf = root->children[0];
+    z++;
 
     if(decl()==false)
     {
@@ -136,6 +168,16 @@ bool decl()
     {
         if(tokenedArray[i+2]=="SEMICOLON")
         {
+            leaf = decl_list_leaf;
+
+            vector <node*> tempVec;
+            node* temp = create_newNode("decl");
+            tempVec.push_back(temp);
+            leaf->children=tempVec;
+            temp->parent=leaf;
+
+            leaf = tempVec[0];
+
             cout << "decl" << endl;
             var_decl();
             i++;
@@ -143,6 +185,16 @@ bool decl()
         }
         else if(tokenedArray[i+2]=="FIRST_BRACKET_OPEN")
         {
+            leaf = decl_list_leaf;
+
+            vector <node*> tempVec;
+            node* temp = create_newNode("decl");
+            tempVec.push_back(temp);
+            leaf->children=tempVec;
+            temp->parent=leaf;
+
+            leaf = tempVec[0];
+
             cout << "decl" << endl;
             i=i+3;
             function_decl();
@@ -158,6 +210,14 @@ bool decl()
 
 bool var_decl()
 {
+    node* temp = create_newNode("var_decl");
+    vector <node*> tempVec;
+    tempVec.push_back(temp);
+    leaf->children=tempVec;
+    temp->parent=leaf;
+
+    leaf = tempVec[0];
+
     cout << "var_decl" << endl;
 
     type_spec();
@@ -168,10 +228,36 @@ bool var_decl()
 
 void type_spec()
 {
-    cout << "type_spec" << endl << untokenedArray[i] << endl;
+    vector <node*> tempVec;
+    string s1,s2,s3,s4;
+    s1 = "type_spec (";
+    s2 = untokenedArray[i];
+    s3 = ")";
+    s4=s1+s2+s3;
+    cout << s4 << endl;
     i++;
-    cout << "IDENT" << endl << untokenedArray[i] << endl;
+    node* temp1 = create_newNode(s4);
+    tempVec.push_back(temp1);
+
+    s1 = "IDENT (";
+    s2 = untokenedArray[i];
+    s3 = ")";
+    s4=s1+s2+s3;
+    cout << s4 << endl;
     i++;
+    node* temp2 = create_newNode(s4);
+    tempVec.push_back(temp2);
+
+    leaf->children=tempVec;
+    temp1->parent=leaf;
+    temp2->parent=leaf;
+
+    node* temp3 = create_newNode(untokenedArray[i]);
+
+//working here 666666666666666666666666666666666666666
+   // leaf = tempVec[0];
+
+    //i++;
 
     return;
 }
@@ -183,7 +269,16 @@ void function_decl()
 
     if(params()==true && compound_stmt()==true)
     {
+        node* temp = create_newNode("function_declaration");
+        vector <node*> tempVec;
+        tempVec.push_back(temp);
+        leaf->children=tempVec;
+        temp->parent=leaf;
+
+        leaf = tempVec[0];
+
         cout << "function_decl" << endl;
+
         i=marker;
         params_print();
         compound_stmt_print();
@@ -215,9 +310,18 @@ bool params()
 
 bool params_print()
 {
-    cout << "params" << endl;
     if(tokenedArray[i]=="VOID" && tokenedArray[i+1]=="FIRST_BRACKET_CLOSE")
     {
+        node* temp = create_newNode("params (VOID)");
+        vector <node*> tempVec;
+        tempVec.push_back(temp);
+        leaf->children=tempVec;
+        temp->parent=leaf;
+
+        leaf = tempVec[0];
+
+        cout << "params" << endl;
+
         cout << "VOID" << endl;
         i=i+2;
         return true;
@@ -252,6 +356,14 @@ bool param_list_print()
 {
     if(param_list_flag==0)
     {
+        node* temp = create_newNode("param_list");
+        vector <node*> tempVec;
+        tempVec.push_back(temp);
+        leaf->children=tempVec;
+        temp->parent=leaf;
+
+        leaf = tempVec[0];
+
         cout << "param_list" << endl;
         param_list_flag=1;
     }
@@ -291,6 +403,14 @@ bool param_print()
 {
     if(tokenedArray[i]=="type_spec" && tokenedArray[i+1]=="IDENT")
     {
+        node* temp = create_newNode("param");
+        vector <node*> tempVec;
+        tempVec.push_back(temp);
+        leaf->children=tempVec;
+        temp->parent=leaf;
+
+        leaf = tempVec[0];
+
         cout << "param" << endl;
         type_spec();
         return true;
