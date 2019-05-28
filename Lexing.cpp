@@ -1,7 +1,10 @@
 #include <iostream>
 #include <fstream>
+#include <vector>
 
 using namespace std;
+
+vector <string> v;
 
 int if_else(string s)
 {
@@ -101,12 +104,12 @@ int main()
     string s="";
     ifstream ifile;
     ofstream ofile;
-    ifile.open("1.txt");
+    ifile.open("myCode.txt");
     ofile.open("Lexing.txt");
 
     if(ifile.is_open())
     {
-        cout << "Lexing has been opened" << endl;
+        cout << "Code File has been Opened" << endl;
 
         int string_flag=-1;
         char prev_ch='?';
@@ -121,6 +124,7 @@ int main()
                     ofile << s << " type_spec" << endl;
                     s = "";
                     tokenCount++;
+                    v.push_back("type_spec");
                     ifile.get(ch);
                     break;
                 }
@@ -129,6 +133,7 @@ int main()
                 {
                     ofile << s << " header_file" << endl;
                     tokenCount++;
+                    v.push_back("header_file");
                 }
 
                 s="";
@@ -146,59 +151,82 @@ int main()
         {
             if(ch==',' || ch==';' || ch==' ' || ch=='=' || ch=='\n' || ch=='\t' || ch=='('|| ch==')' || ch=='{'|| ch=='}'|| ch=='"'|| ch==']'|| ch=='['|| ch=='+'|| ch=='-'|| ch=='*'|| ch=='/'|| ch=='%'|| ch=='!'|| ch=='<'|| ch=='>')
             {
-                if(type_spec(s)==true)
+                if(s=="while")
+                {
+                    ofile << s << " WHILE" << endl;
+                    s = "";
+                    tokenCount++;
+                    v.push_back("WHILE");
+                }
+                else if(s=="void")
+                {
+                    ofile << s << " VOID" << endl;
+                    s = "";
+                    tokenCount++;
+                    v.push_back("VOID");
+                }
+                else if(type_spec(s)==true)
                 {
                     ofile << s << " type_spec" << endl;
                     s = "";
                     tokenCount++;
+                    v.push_back("type_spec");
                 }
                 else if(BREAK(s)==true)
                 {
                     ofile << s << " BREAK" << endl;
                     s = "";
                     tokenCount++;
+                    v.push_back("BREAK");
                 }
                 else if(if_else(s)==11)
                 {
                     ofile << s << " IF" << endl;
                     s = "";
                     tokenCount++;
+                    v.push_back("IF");
                 }
                 else if(if_else(s)==22)
                 {
                     ofile << s << " ELSE" << endl;
                     s = "";
                     tokenCount++;
+                    v.push_back("ELSE");
                 }
                 else if(bool_literal(s)==true)
                 {
                     ofile << s << " BOOL_LIT" << endl;
                     s = "";
                     tokenCount++;
+                    v.push_back("BOOL_LIT");
                 }
                 else if(float_literal(s)==true)
                 {
                     ofile << s << " FLOAT_LIT" << endl;
                     s = "";
                     tokenCount++;
+                    v.push_back("FLOAT_LIT");
                 }
                 else if(int_literal(s)==true)
                 {
                     ofile << s << " INT_LIT" << endl;
                     s = "";
                     tokenCount++;
+                    v.push_back("INT_LIT");
                 }
                 else if(ret(s)==true)
                 {
                     ofile << s << " RETURN" << endl;
                     s = "";
                     tokenCount++;
+                    v.push_back("RETURN");
                 }
                 else if(ident(s)==true)
                 {
                     ofile << s << " IDENT" << endl;
                     s = "";
                     tokenCount++;
+                    v.push_back("IDENT");
                 }
                 if(ch=='"')
                 {
@@ -220,96 +248,112 @@ int main()
                     ofile << ch << " SEMICOLON" << endl;
                     s = "";
                     tokenCount++;
+                    v.push_back("SEMICOLON");
                 }
                 if(ch==',')
                 {
                     ofile << ch << " COMA" << endl;
                     s = "";
                     tokenCount++;
+                    v.push_back("COMA");
                 }
                 if(ch=='(')
                 {
                     ofile << ch << " FIRST_BRACKET_OPEN" << endl;
                     s = "";
                     tokenCount++;
+                    v.push_back("FIRST_BRACKET_OPEN");
                 }
                 if(ch==')')
                 {
                     ofile << ch << " FIRST_BRACKET_CLOSE" << endl;
                     s = "";
                     tokenCount++;
+                    v.push_back("FIRST_BRACKET_CLOSE");
                 }
                 if(ch=='{')
                 {
                     ofile << ch << " SECOND_BRACKET_OPEN" << endl;
                     s = "";
                     tokenCount++;
+                    v.push_back("SECOND_BRACKET_OPEN");
                 }
                 if(ch=='}')
                 {
                     ofile << ch << " SECOND_BRACKET_CLOSE" << endl;
                     s = "";
                     tokenCount++;
+                    v.push_back("FIRST_BRACKET_CLOSE");
                 }
                 if(ch=='[')
                 {
                     ofile << ch << " THIRD_BRACKET_OPEN" << endl;
                     s = "";
                     tokenCount++;
+                    v.push_back("THIRD_BRACKET_OPEN");
                 }
                 if(ch==']')
                 {
                     ofile << ch << " THIRD_BRACKET_CLOSE" << endl;
                     s = "";
                     tokenCount++;
+                    v.push_back("FIRST_BRACKET_CLOSE");
                 }
                 if(ch=='+')
                 {
                     ofile << ch << " ADD" << endl;
                     s = "";
                     tokenCount++;
+                    v.push_back("ADD");
                 }
                 if(ch=='-')
                 {
                     ofile << ch << " SUBTRACT" << endl;
                     s = "";
                     tokenCount++;
+                    v.push_back("SUBTRACT");
                 }
                 if(ch=='*')
                 {
                     ofile << ch << " MULTIPLICATION" << endl;
                     s = "";
                     tokenCount++;
+                    v.push_back("MULTIPLICATION");
                 }
                 if(ch=='/')
                 {
                     ofile << ch << " DIVISION" << endl;
                     s = "";
                     tokenCount++;
+                    v.push_back("DIVISION");
                 }
                 if(ch=='%')
                 {
                     ofile << ch << " MODULUS" << endl;
                     s = "";
                     tokenCount++;
+                    v.push_back("MODULUS");
                 }
                 if(ch=='<')
                 {
                     ofile << ch << " LESSER" << endl;
                     s = "";
                     tokenCount++;
+                    v.push_back("LESSER");
                 }
                 if(ch=='>')
                 {
                     ofile << ch << " GREATER" << endl;
                     s = "";
                     tokenCount++;
+                    v.push_back("GREATER");
                 }
                 if(ch=='!')
                 {
                     ofile << ch << " NOT" << endl;
                     s = "";
                     tokenCount++;
+                    v.push_back("NOT");
                 }
             }
             else s = s + ch;
@@ -322,38 +366,44 @@ int main()
                 ofile << prev_ch << ch << " " << "EQ" << endl;
                 s = "";
                 tokenCount++;
+                v.push_back("EQ");
             }
             else if(ch=='='&&prev_ch=='!')
             {
                 ofile << prev_ch << ch << " " << "NE" << endl;
                 s = "";
                 tokenCount++;
+                v.push_back("NE");
             }
             else if(ch=='='&&prev_ch=='>')
             {
                 ofile << prev_ch << ch << " " << "GE" << endl;
                 s = "";
                 tokenCount++;
+                v.push_back("GE");
             }
             else if(ch=='='&&prev_ch=='<')
             {
                 ofile << prev_ch << ch << " " << "LE" << endl;
                 s = "";
                 tokenCount++;
+                v.push_back("LE");
             }
-            else if(ch!='='&&prev_ch=='=')
+            else if(ch!='='&&prev_ch=='='&&v[tokenCount-1]!="EQ"&&v[tokenCount-1]!="ASSIGNMENT")
             {
                 ofile << "= " << "ASSIGNMENT" << endl;
                 s = "";
                 tokenCount++;
+                v.push_back("ASSIGNMENT");
             }
 
         }
 
     }
-    else cout << "File did not open" << endl;
+    else cout << "Code File has not opened" << endl;
 
-    cout << tokenCount << endl;
+    cout << "Number of Tokens is: " << tokenCount << endl;
+    cout << "Lexing has been done" << endl;
 
     ifile.close();
     ofile.close();
