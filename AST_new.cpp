@@ -2,6 +2,13 @@
 
 using namespace std;
 
+struct node{
+    string data;
+    node* parent;
+    vector <struct node*> children;
+};
+
+void PreorderTraversal(node* treeNode);
 void program();
 void decl_list();
 bool decl();
@@ -39,12 +46,7 @@ bool expr_print();
 bool arglist();
 bool args();
 
-struct node{
-    string data;
-    node* parent;
-    vector <struct node*> children;
-};
-
+int success=0;
 node* leaf = new node;
 node* root = new node;
 node* decl_list_leaf = new node;
@@ -99,9 +101,30 @@ int main()
 
     if(tokenedArray[i]=="header_file") program();
 
+    //if(success==1)
+    {
+        cout << endl << "---PreOrderTraversal---" << endl;
+        PreorderTraversal(root);
+    }
+
     return 0;
 }
 
+void PreorderTraversal(node* treeNode)
+{
+    cout << treeNode->data << endl;
+
+    int size = treeNode->children.size();
+
+    if(size==0) return;
+    int i=0;
+    while(i < size)
+    {
+        PreorderTraversal(treeNode->children[i]);
+        i++;
+    }
+
+}
 
 void program()
 {
@@ -149,12 +172,11 @@ void decl_list()
         decl_list_flag=1;
     }
 
-    leaf = root->children[0];
-    z++;
+    leaf = decl_list_leaf;
 
     if(decl()==false)
     {
-        //decl_list_flag=0;
+        decl_list_flag=0;
         return;
     }
 
@@ -236,6 +258,7 @@ void type_spec()
     s4=s1+s2+s3;
     cout << s4 << endl;
     i++;
+
     node* temp1 = create_newNode(s4);
     tempVec.push_back(temp1);
 
@@ -252,8 +275,6 @@ void type_spec()
     temp1->parent=leaf;
     temp2->parent=leaf;
 
-    node* temp3 = create_newNode(untokenedArray[i]);
-
 //working here 666666666666666666666666666666666666666
    // leaf = tempVec[0];
 
@@ -269,7 +290,7 @@ void function_decl()
 
     if(params()==true && compound_stmt()==true)
     {
-        node* temp = create_newNode("function_declaration");
+        node* temp = create_newNode("function_decl");
         vector <node*> tempVec;
         tempVec.push_back(temp);
         leaf->children=tempVec;
