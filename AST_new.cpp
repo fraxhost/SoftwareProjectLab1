@@ -29,6 +29,7 @@ bool local_decls_print();
 bool local_decl();
 bool local_decl_print();
 bool if_stmt();
+bool if_stmt_print();
 bool return_stmt();
 bool return_stmt_print();
 bool break_stmt();
@@ -346,12 +347,11 @@ bool stmt()
 //        i=k;
 //        return true;
 //    }
-//    else if(if_stmt()==true)
-//    {
-//        i=k;
-//        return true;
-//    }
-    else if(while_stmt()==true)
+    else if(if_stmt()==true)
+    {
+        return true;
+    }
+    if(while_stmt()==true)
     {
         return true;
     }
@@ -381,11 +381,10 @@ bool stmt_print()
 //        cout << "stmt" << endl;
 //        return true;
 //    }
-//    else if(if_stmt()==true)
-//    {
-//        cout << "stmt" << endl;
-//        return true;
-//    }
+    else if(if_stmt_print()==true)
+    {
+        return true;
+    }
     else if(while_stmt_print()==true)
     {
         return true;
@@ -544,30 +543,41 @@ bool compound_stmt_print()
     }
 }
 
-
+int local_decls_flag1=0;
 bool local_decls()
 {
-    if(local_decl()==false)
+    if(local_decl()==true)
     {
-        return true;
+        local_decls();
+        local_decls_flag1=1;
     }
-
-    local_decls();
+    else
+    {
+        if(local_decls_flag1==1)
+        {
+            return true;
+            local_decls_flag1=0;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }
 
 
-int local_decls_flag=0;
+int local_decls_flag2=0;
 bool local_decls_print()
 {
-    if(local_decls_flag==0)
+    if(local_decls_flag2==0)
     {
         cout << "local_decls" << endl;
-        local_decls_flag=1;
+        local_decls_flag2=1;
     }
 
     if(local_decl_print()==false)
     {
-        local_decls_flag=0;
+        local_decls_flag2=0;
         return true;
     }
 
@@ -607,47 +617,108 @@ bool local_decl_print()
 
 bool if_stmt()
 {
-    if(tokenedArray[i]=="IF" && tokenedArray[i+1]=="FIRST_BRACKET_OPEN" && expr() && tokenedArray[i+2]=="FIRST_BRACKET_CLOSE" && stmt() && tokenedArray[i+3]=="ELSE" && stmt())
+    if(tokenedArray[i+1]=="IF" && tokenedArray[i+2]=="FIRST_BRACKET_OPEN")
     {
-        cout << "if_stmt" << endl;
-        i=i+3;
-        return true;
-    }
-    else if(tokenedArray[i]=="IF" && tokenedArray[i+1]=="FIRST_BRACKET_OPEN" && expr() && tokenedArray[i+2]=="FIRST_BRACKET_CLOSE" && stmt())
-    {
-        cout << "if_stmt" << endl;
-        i=i+3;
+        i=i+2;
+
+        if(expr()==true)
+        {
+            if(tokenedArray[i+1]=="FIRST_BRACKET_CLOSE")
+            {
+                i++;
+
+                if(stmt()==true)
+                {
+                    if(tokenedArray[i+1]=="ELSE")
+                    {
+                        i++;
+
+                        if(stmt()==true)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+
         return true;
     }
     else
     {
         return false;
     }
+}
 
-    //new
-    if(tokenedArray[i]=="IF" && tokenedArray[i+1]=="FIRST_BRACKET_OPEN")
+
+bool if_stmt_print()
+{
+    if(tokenedArray[i+1]=="IF" && tokenedArray[i+2]=="FIRST_BRACKET_OPEN")
     {
-        if(expr()==true)
+        cout << "stmt" << endl;
+        cout << "if_stmt" << endl;
+
+        i=i+2;
+
+        if(expr_print()==true)
         {
-            if(tokenedArray[i+2]=="FIRST_BRACKET_CLOSE")
+            if(tokenedArray[i+1]=="FIRST_BRACKET_CLOSE")
             {
-                if(stmt()==true)
+                i++;
+
+                if(stmt_print()==true)
                 {
-                    if(tokenedArray[i+3]=="ELSE" && stmt()==true)
+                    if(tokenedArray[i+1]=="ELSE")
                     {
-                        return true;
+                        cout << "else" << endl;
+
+                        i++;
+
+                        if(stmt_print()==true)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
                     }
+
+                    return true;
+                }
+                else
+                {
+                    return false;
                 }
             }
+            else
+            {
+                return false;
+            }
         }
-        cout << "if_stmt" << endl;
-        i=i+3;
-        return true;
-    }
-    else if(tokenedArray[i]=="IF" && tokenedArray[i+1]=="FIRST_BRACKET_OPEN" && expr() && tokenedArray[i+2]=="FIRST_BRACKET_CLOSE" && stmt())
-    {
-        cout << "if_stmt" << endl;
-        i=i+3;
+        else
+        {
+            return false;
+        }
+
         return true;
     }
     else
@@ -749,7 +820,7 @@ bool expr_print()
         cout << "stmt" << endl;
         cout << "expr_stmt" << endl;
         cout << "IDENT" << endl << untokenedArray[i+1] << endl;
-        cout << "ASSIGNMENT" << endl << "==" << endl;
+        cout << "ASSIGNMENT" << endl << "=" << endl;
         cout << "IDENT" << endl << untokenedArray[i+3] << endl;
 
         if(tokenedArray[i+4]=="ADD")
@@ -779,7 +850,34 @@ bool expr_print()
         cout << "stmt" << endl;
         cout << "expr_stmt" << endl;
         cout << "IDENT" << endl << untokenedArray[i+1] << endl;
-        cout << "ASSIGNMENT" << endl << "==" << endl;
+        cout << "ASSIGNMENT" << endl << "=" << endl;
+        cout << "IDENT" << endl << untokenedArray[i+3] << endl;
+        i=i+3;
+        return true;
+    }
+    else if(tokenedArray[i+1]=="IDENT"&&(tokenedArray[i+2]=="EQ"||tokenedArray[i+2]=="NE"||tokenedArray[i+2]=="LESSER"||tokenedArray[i+2]=="GREATER")&&tokenedArray[i+3]=="IDENT")
+    {
+        cout << "stmt" << endl;
+        cout << "expr_stmt" << endl;
+        cout << "IDENT" << endl << untokenedArray[i+1] << endl;
+
+        if(tokenedArray[i+2]=="EQ")
+        {
+            cout << "EQ" << endl << "==" << endl;
+        }
+        else if(tokenedArray[i+2]=="NE")
+        {
+            cout << "NE" << endl << "!=" << endl;
+        }
+        if(tokenedArray[i+2]=="LESSER")
+        {
+            cout << "LESSER" << endl << "<" << endl;
+        }
+        if(tokenedArray[i+2]=="GREATER")
+        {
+            cout << "GREATER" << endl << ">" << endl;
+        }
+
         cout << "IDENT" << endl << untokenedArray[i+3] << endl;
         i=i+3;
         return true;
@@ -798,6 +896,11 @@ bool expr()
         return true;
     }
     else if(tokenedArray[i+1]=="IDENT"&&tokenedArray[i+2]=="ASSIGNMENT"&&tokenedArray[i+3]=="IDENT")
+    {
+        i=i+3;
+        return true;
+    }
+    else if(tokenedArray[i+1]=="IDENT"&&(tokenedArray[i+2]=="EQ"||tokenedArray[i+2]=="NE"||tokenedArray[i+2]=="LESSER"||tokenedArray[i+2]=="GREATER")&&tokenedArray[i+3]=="IDENT")
     {
         i=i+3;
         return true;
