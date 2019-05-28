@@ -190,12 +190,12 @@ bool decl()
     {
         if(tokenedArray[i+2]=="SEMICOLON")
         {
-            leaf = decl_list_leaf;
+            //leaf = decl_list_leaf;
 
             vector <node*> tempVec;
             node* temp = create_newNode("decl");
             tempVec.push_back(temp);
-            leaf->children=tempVec;
+            leaf->children.insert(leaf->children.end(),tempVec.begin(),tempVec.end());
             temp->parent=leaf;
 
             leaf = tempVec[0];
@@ -207,12 +207,12 @@ bool decl()
         }
         else if(tokenedArray[i+2]=="FIRST_BRACKET_OPEN")
         {
-            leaf = decl_list_leaf;
+            //leaf = decl_list_leaf;
 
             vector <node*> tempVec;
             node* temp = create_newNode("decl");
             tempVec.push_back(temp);
-            leaf->children=tempVec;
+            leaf->children.insert(leaf->children.end(),tempVec.begin(),tempVec.end());
             temp->parent=leaf;
 
             leaf = tempVec[0];
@@ -235,7 +235,7 @@ bool var_decl()
     node* temp = create_newNode("var_decl");
     vector <node*> tempVec;
     tempVec.push_back(temp);
-    leaf->children=tempVec;
+    leaf->children.insert(leaf->children.end(),tempVec.begin(),tempVec.end());
     temp->parent=leaf;
 
     leaf = tempVec[0];
@@ -274,11 +274,6 @@ void type_spec()
     leaf->children=tempVec;
     temp1->parent=leaf;
     temp2->parent=leaf;
-
-//working here 666666666666666666666666666666666666666
-   // leaf = tempVec[0];
-
-    //i++;
 
     return;
 }
@@ -341,9 +336,7 @@ bool params_print()
 
         leaf = tempVec[0];
 
-        cout << "params" << endl;
-
-        cout << "VOID" << endl;
+        cout << "params (VOID)" << endl;
         i=i+2;
         return true;
     }
@@ -462,6 +455,14 @@ bool stmt_list_print()
 {
     if(stmt_list_flag==0)
     {
+        node* temp = create_newNode("stmt_list");
+        vector <node*> tempVec;
+        tempVec.push_back(temp);
+        leaf->children.insert(leaf->children.end(),tempVec.begin(),tempVec.end());
+        temp->parent=leaf;
+
+        leaf = tempVec[0];
+
         cout << "stmt_list" << endl;
         stmt_list_flag=1;
     }
@@ -479,7 +480,11 @@ bool stmt_list_print()
 
 bool stmt()
 {
-    if(expr_stmt()==true)
+    if(return_stmt()==true)
+    {
+        return true;
+    }
+    else if(expr_stmt()==true)
     {
         return true;
     }
@@ -492,11 +497,7 @@ bool stmt()
     {
         return true;
     }
-    if(while_stmt()==true)
-    {
-        return true;
-    }
-    else if(return_stmt()==true)
+    else if(while_stmt()==true)
     {
         return true;
     }
@@ -513,7 +514,11 @@ bool stmt()
 
 bool stmt_print()
 {
-    if(expr_stmt_print()==true)
+    if(return_stmt_print()==true)
+    {
+        return true;
+    }
+    else if(expr_stmt_print()==true)
     {
         return true;
     }
@@ -527,10 +532,6 @@ bool stmt_print()
         return true;
     }
     else if(while_stmt_print()==true)
-    {
-        return true;
-    }
-    else if(return_stmt_print()==true)
     {
         return true;
     }
@@ -568,13 +569,29 @@ bool expr_stmt_print()
 {
     if(tokenedArray[i+1]=="SEMICOLON")
     {
+        node* temp = create_newNode("stmt");
+        vector <node*> tempVec;
+        tempVec.push_back(temp);
+        leaf->children.insert(leaf->children.end(),tempVec.begin(),tempVec.end());
+        temp->parent=leaf;
+
+        leaf = tempVec[0];
+
+        node* temp1 = create_newNode("expr_stmt (;)");
+        vector <node*> tempVec1;
+        tempVec1.push_back(temp1);
+        leaf->children.insert(leaf->children.end(),tempVec1.begin(),tempVec1.end());
+        temp1->parent=leaf;
+
+        leaf = tempVec1[0];
+
         cout << "stmt" << endl;
         cout << "expr_stmt" << endl;
         cout << ";" << endl;
         i++;
         return true;
     }
-    else if((tokenedArray[i+6]=="SEMICOLON"||tokenedArray[i+4]=="SEMICOLON") && expr_print()==true)
+    if((tokenedArray[i+6]=="SEMICOLON"||tokenedArray[i+4]=="SEMICOLON") && expr_print()==true)
     {
         i++;
         return true;
@@ -899,8 +916,24 @@ bool return_stmt_print()
 {
     if(tokenedArray[i+1]=="RETURN"&&tokenedArray[i+2]=="SEMICOLON")
     {
+        node* temp = create_newNode("stmt");
+        vector <node*> tempVec;
+        tempVec.push_back(temp);
+        leaf->children.insert(leaf->children.end(),tempVec.begin(),tempVec.end());
+        temp->parent=leaf;
+
+        leaf = tempVec[0];
+
+        node* temp1 = create_newNode("return_stmt");
+        vector <node*> tempVec1;
+        tempVec1.push_back(temp1);
+        leaf->children.insert(leaf->children.end(),tempVec1.begin(),tempVec1.end());
+        temp1->parent=leaf;
+
+        leaf = tempVec1[0];
+
         cout << "stmt" << endl;
-        cout << "return_stmt-1" << endl;
+        cout << "return_stmt" << endl;
         i=i+2;
         return true;
     }
@@ -909,10 +942,26 @@ bool return_stmt_print()
         i=i+1;
         if(expr()==true)
         {
-            if(tokenedArray[i]=="SEMICOLON")
+            if(tokenedArray[i+1]=="SEMICOLON")
             {
+                node* temp = create_newNode("stmt");
+                vector <node*> tempVec;
+                tempVec.push_back(temp);
+                leaf->children.insert(leaf->children.end(),tempVec.begin(),tempVec.end());
+                temp->parent=leaf;
+
+                leaf = tempVec[0];
+
+                node* temp1 = create_newNode("return_stmt");
+                vector <node*> tempVec1;
+                tempVec1.push_back(temp1);
+                leaf->children.insert(leaf->children.end(),tempVec1.begin(),tempVec1.end());
+                temp1->parent=leaf;
+
+                leaf = tempVec1[0];
+
                 cout << "stmt" << endl;
-                cout << "return_stmt-2" << endl;
+                cout << "return_stmt" << endl;
                 i=i+2;
                 return true;
             }
@@ -942,6 +991,22 @@ bool break_stmt_print()
 {
     if(tokenedArray[i+1]=="BREAK" && tokenedArray[i+2]=="SEMICOLON")
     {
+        node* temp = create_newNode("stmt");
+        vector <node*> tempVec;
+        tempVec.push_back(temp);
+        leaf->children.insert(leaf->children.end(),tempVec.begin(),tempVec.end());
+        temp->parent=leaf;
+
+        leaf = tempVec[0];
+
+        node* temp1 = create_newNode("break_stmt");
+        vector <node*> tempVec1;
+        tempVec1.push_back(temp1);
+        leaf->children.insert(leaf->children.end(),tempVec1.begin(),tempVec1.end());
+        temp1->parent=leaf;
+
+        leaf = tempVec1[0];
+
         cout << "stmt" << endl;
         cout << "break_stmt" << endl;
         i=i+2;
@@ -958,8 +1023,60 @@ bool expr_print()
 {
     if(tokenedArray[i+1]=="IDENT"&&tokenedArray[i+2]=="ASSIGNMENT"&&tokenedArray[i+3]=="IDENT"&&(tokenedArray[i+4]=="ADD"||tokenedArray[i+4]=="SUBTRACT"||tokenedArray[i+4]=="MULTIPLICATION"||tokenedArray[i+4]=="DIVISION")&&tokenedArray[i+5]=="IDENT")
     {
+        node* temp = create_newNode("stmt");
+        vector <node*> tempVec;
+        tempVec.push_back(temp);
+        leaf->children.insert(leaf->children.end(),tempVec.begin(),tempVec.end());
+        temp->parent=leaf;
+
+        leaf = tempVec[0];
+
+        node* temp1 = create_newNode("expr_stmt");
+        vector <node*> tempVec1;
+        tempVec1.push_back(temp1);
+        leaf->children.insert(leaf->children.end(),tempVec1.begin(),tempVec1.end());
+        temp1->parent=leaf;
+
+        leaf = tempVec1[0];
+
         cout << "stmt" << endl;
         cout << "expr_stmt" << endl;
+
+        string s1,s2,s3,s4;
+        s1="IDENT (";
+        s2=untokenedArray[i+1];
+        s3=")";
+        s4=s1+s2+s3;
+
+        node* temp2 = create_newNode(s4);
+        vector <node*> tempVec2;
+        tempVec2.push_back(temp2);
+        leaf->children.insert(leaf->children.end(),tempVec2.begin(),tempVec2.end());
+        temp2->parent=leaf;
+
+        //leaf = tempVec1[0];
+
+        node* temp3 = create_newNode("ASSIGNMENT (=)");
+        vector <node*> tempVec3;
+        tempVec3.push_back(temp3);
+        leaf->children.insert(leaf->children.end(),tempVec3.begin(),tempVec3.end());
+        temp3->parent=leaf;
+
+        //leaf = tempVec1[0];
+
+        s1="IDENT (";
+        s2=untokenedArray[i+3];
+        s3=")";
+        s4=s1+s2+s3;
+
+        node* temp4 = create_newNode(s4);
+        vector <node*> tempVec4;
+        tempVec4.push_back(temp4);
+        leaf->children.insert(leaf->children.end(),tempVec4.begin(),tempVec4.end());
+        temp1->parent=leaf;
+
+        //leaf = tempVec1[0];
+
         cout << "IDENT" << endl << untokenedArray[i+1] << endl;
         cout << "ASSIGNMENT" << endl << "=" << endl;
         cout << "IDENT" << endl << untokenedArray[i+3] << endl;
@@ -967,19 +1084,64 @@ bool expr_print()
         if(tokenedArray[i+4]=="ADD")
         {
             cout << "ADD" << endl << "+" << endl;
+
+            node* temp5 = create_newNode("ADD (+)");
+            vector <node*> tempVec5;
+            tempVec5.push_back(temp5);
+            leaf->children.insert(leaf->children.end(),tempVec5.begin(),tempVec5.end());
+            temp5->parent=leaf;
+
+            //leaf = tempVec1[0];
         }
         if(tokenedArray[i+4]=="SUBTRACT")
         {
             cout << "SUBTRACT" << endl << "-" << endl;
+
+            node* temp5 = create_newNode("SUBTRACT (-)");
+            vector <node*> tempVec5;
+            tempVec5.push_back(temp5);
+            leaf->children.insert(leaf->children.end(),tempVec5.begin(),tempVec5.end());
+            temp5->parent=leaf;
+
+            //leaf = tempVec5[0];
         }
         if(tokenedArray[i+4]=="MULTIPLICATION")
         {
             cout << "MULTIPLICATION" << endl << "*" << endl;
+
+            node* temp5 = create_newNode("MULTIPLICATION (*)");
+            vector <node*> tempVec5;
+            tempVec5.push_back(temp5);
+            leaf->children.insert(leaf->children.end(),tempVec5.begin(),tempVec5.end());
+            temp5->parent=leaf;
+
+            //leaf = tempVec5[0];
         }
         if(tokenedArray[i+4]=="DIVISION")
         {
             cout << "DIVISION" << endl << "/" << endl;
+
+            node* temp5 = create_newNode("DIVISION (/)");
+            vector <node*> tempVec5;
+            tempVec5.push_back(temp5);
+            leaf->children.insert(leaf->children.end(),tempVec5.begin(),tempVec5.end());
+            temp5->parent=leaf;
+
+            //leaf = tempVec5[0];
         }
+
+        s1="IDENT (";
+        s2=untokenedArray[i+5];
+        s3=")";
+        s4=s1+s2+s3;
+
+        node* temp6 = create_newNode(s4);
+        vector <node*> tempVec6;
+        tempVec6.push_back(temp6);
+        leaf->children.insert(leaf->children.end(),tempVec6.begin(),tempVec6.end());
+        temp6->parent=leaf;
+
+        //leaf = tempVec1[0];
 
         cout << "IDENT" << endl << untokenedArray[i+5] << endl;
         i=i+5;
@@ -988,8 +1150,58 @@ bool expr_print()
     }
     else if(tokenedArray[i+1]=="IDENT"&&tokenedArray[i+2]=="ASSIGNMENT"&&tokenedArray[i+3]=="IDENT")
     {
+        node* temp = create_newNode("stmt");
+        vector <node*> tempVec;
+        tempVec.push_back(temp);
+        leaf->children.insert(leaf->children.end(),tempVec.begin(),tempVec.end());
+        temp->parent=leaf;
+
+        leaf = tempVec[0];
+
+        node* temp1 = create_newNode("expr_stmt");
+        vector <node*> tempVec1;
+        tempVec1.push_back(temp1);
+        leaf->children.insert(leaf->children.end(),tempVec1.begin(),tempVec1.end());
+        temp1->parent=leaf;
+
+        leaf = tempVec1[0];
+
         cout << "stmt" << endl;
         cout << "expr_stmt" << endl;
+
+        string s1,s2,s3,s4;
+        s1="IDENT (";
+        s2=untokenedArray[i+1];
+        s3=")";
+        s4=s1+s2+s3;
+
+        node* temp2 = create_newNode(s4);
+        vector <node*> tempVec2;
+        tempVec2.push_back(temp2);
+        leaf->children.insert(leaf->children.end(),tempVec2.begin(),tempVec2.end());
+        temp2->parent=leaf;
+
+        //leaf = tempVec1[0];
+
+        node* temp3 = create_newNode("ASSIGNMENT (=)");
+        vector <node*> tempVec3;
+        tempVec3.push_back(temp3);
+        leaf->children.insert(leaf->children.end(),tempVec3.begin(),tempVec3.end());
+        temp3->parent=leaf;
+
+        //leaf = tempVec1[0];
+
+        s1="IDENT (";
+        s2=untokenedArray[i+3];
+        s3=")";
+        s4=s1+s2+s3;
+
+        node* temp4 = create_newNode(s4);
+        vector <node*> tempVec4;
+        tempVec4.push_back(temp4);
+        leaf->children.insert(leaf->children.end(),tempVec4.begin(),tempVec4.end());
+        temp1->parent=leaf;
+
         cout << "IDENT" << endl << untokenedArray[i+1] << endl;
         cout << "ASSIGNMENT" << endl << "=" << endl;
         cout << "IDENT" << endl << untokenedArray[i+3] << endl;
@@ -998,29 +1210,120 @@ bool expr_print()
     }
     else if(tokenedArray[i+1]=="IDENT"&&(tokenedArray[i+2]=="EQ"||tokenedArray[i+2]=="NE"||tokenedArray[i+2]=="LESSER"||tokenedArray[i+2]=="GREATER")&&tokenedArray[i+3]=="IDENT")
     {
+        node* temp = create_newNode("stmt");
+        vector <node*> tempVec;
+        tempVec.push_back(temp);
+        leaf->children.insert(leaf->children.end(),tempVec.begin(),tempVec.end());
+        temp->parent=leaf;
+
+        leaf = tempVec[0];
+
+        node* temp1 = create_newNode("expr_stmt");
+        vector <node*> tempVec1;
+        tempVec1.push_back(temp1);
+        leaf->children.insert(leaf->children.end(),tempVec1.begin(),tempVec1.end());
+        temp1->parent=leaf;
+
+        leaf = tempVec1[0];
+
         cout << "stmt" << endl;
         cout << "expr_stmt" << endl;
+
+        string s1,s2,s3,s4;
+        s1="IDENT (";
+        s2=untokenedArray[i+1];
+        s3=")";
+        s4=s1+s2+s3;
+
+        node* temp2 = create_newNode(s4);
+        vector <node*> tempVec2;
+        tempVec2.push_back(temp2);
+        leaf->children.insert(leaf->children.end(),tempVec2.begin(),tempVec2.end());
+        temp2->parent=leaf;
+
+        //leaf = tempVec1[0];
+
         cout << "IDENT" << endl << untokenedArray[i+1] << endl;
 
         if(tokenedArray[i+2]=="EQ")
         {
+            node* temp3 = create_newNode("EQ (==)");
+            vector <node*> tempVec3;
+            tempVec3.push_back(temp3);
+            leaf->children.insert(leaf->children.end(),tempVec3.begin(),tempVec3.end());
+            temp3->parent=leaf;
+
             cout << "EQ" << endl << "==" << endl;
         }
         else if(tokenedArray[i+2]=="NE")
         {
+            node* temp3 = create_newNode("NE (!=)");
+            vector <node*> tempVec3;
+            tempVec3.push_back(temp3);
+            leaf->children.insert(leaf->children.end(),tempVec3.begin(),tempVec3.end());
+            temp3->parent=leaf;
+
             cout << "NE" << endl << "!=" << endl;
         }
         if(tokenedArray[i+2]=="LESSER")
         {
+            node* temp3 = create_newNode("LESSER (<)");
+            vector <node*> tempVec3;
+            tempVec3.push_back(temp3);
+            leaf->children.insert(leaf->children.end(),tempVec3.begin(),tempVec3.end());
+            temp3->parent=leaf;
+
             cout << "LESSER" << endl << "<" << endl;
         }
         if(tokenedArray[i+2]=="GREATER")
         {
+            node* temp3 = create_newNode("GREATER (>)");
+            vector <node*> tempVec3;
+            tempVec3.push_back(temp3);
+            leaf->children.insert(leaf->children.end(),tempVec3.begin(),tempVec3.end());
+            temp3->parent=leaf;
+
             cout << "GREATER" << endl << ">" << endl;
         }
 
+        s1="IDENT (";
+        s2=untokenedArray[i+3];
+        s3=")";
+        s4=s1+s2+s3;
+
+        node* temp4 = create_newNode(s4);
+        vector <node*> tempVec4;
+        tempVec4.push_back(temp4);
+        leaf->children.insert(leaf->children.end(),tempVec4.begin(),tempVec4.end());
+        temp1->parent=leaf;
+
         cout << "IDENT" << endl << untokenedArray[i+3] << endl;
         i=i+3;
+        return true;
+    }
+    else if(tokenedArray[i+1]=="BOOL_LIT"||tokenedArray[i+1]=="FLOAT_LIT"||tokenedArray[i+1]=="INT_LIT"||tokenedArray[i+1]=="IDENT")
+    {
+        cout << "stmt" << endl;
+        cout << "expr_stmt" << endl;
+
+        if(tokenedArray[i+1]=="BOOL_LIT")
+        {
+            cout << "BOOL_LIT (" << endl << untokenedArray[i+1] << ")" << endl;
+        }
+        else if(tokenedArray[i+1]=="FLOAT_LIT")
+        {
+            cout << "FLOAT_LIT (" << endl << untokenedArray[i+1] << ")" << endl;
+        }
+        if(tokenedArray[i+2]=="INT_LIT")
+        {
+            cout << "INT_LIT (" << endl << untokenedArray[i+1] << ")" << endl;
+        }
+        if(tokenedArray[i+2]=="IDENT")
+        {
+            cout << "IDENT (" << endl << untokenedArray[i+1] << ")" << endl;
+        }
+
+        i=i+1;
         return true;
     }
     else
@@ -1044,6 +1347,11 @@ bool expr()
     else if(tokenedArray[i+1]=="IDENT"&&(tokenedArray[i+2]=="EQ"||tokenedArray[i+2]=="NE"||tokenedArray[i+2]=="LESSER"||tokenedArray[i+2]=="GREATER")&&tokenedArray[i+3]=="IDENT")
     {
         i=i+3;
+        return true;
+    }
+    else if(tokenedArray[i+1]=="BOOL_LIT"||tokenedArray[i+1]=="FLOAT_LIT"||tokenedArray[i+1]=="INT_LIT"||tokenedArray[i+1]=="IDENT")
+    {
+        i=i+1;
         return true;
     }
     else
