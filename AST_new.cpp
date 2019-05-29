@@ -1217,6 +1217,186 @@ bool expr_print()
         return true;
 
     }
+    else if(tokenedArray[i+1]=="IDENT"&&tokenedArray[i+2]=="ASSIGNMENT"&&tokenedArray[i+3]=="INT_LIT")
+    {
+        node* temp = create_newNode("stmt");
+        vector <node*> tempVec;
+        tempVec.push_back(temp);
+        leaf->children.insert(leaf->children.end(),tempVec.begin(),tempVec.end());
+        temp->parent=leaf;
+
+        leaf = tempVec[0];
+
+        node* temp1 = create_newNode("expr_stmt");
+        vector <node*> tempVec1;
+        tempVec1.push_back(temp1);
+        leaf->children.insert(leaf->children.end(),tempVec1.begin(),tempVec1.end());
+        temp1->parent=leaf;
+
+        leaf = tempVec1[0];
+
+        //cout << "stmt" << endl;
+        //cout << "expr_stmt" << endl;
+
+        string s1,s2,s3,s4;
+        s1="IDENT (";
+        s2=untokenedArray[i+1];
+        s3=")";
+        s4=s1+s2+s3;
+
+        node* temp2 = create_newNode(s4);
+        vector <node*> tempVec2;
+        tempVec2.push_back(temp2);
+        leaf->children.insert(leaf->children.end(),tempVec2.begin(),tempVec2.end());
+        temp2->parent=leaf;
+
+        //leaf = tempVec1[0];
+
+        node* temp3 = create_newNode("ASSIGNMENT (=)");
+        vector <node*> tempVec3;
+        tempVec3.push_back(temp3);
+        leaf->children.insert(leaf->children.end(),tempVec3.begin(),tempVec3.end());
+        temp3->parent=leaf;
+
+        //leaf = tempVec1[0];
+
+        s1="INT_LIT (";
+        s2=untokenedArray[i+3];
+        s3=")";
+        s4=s1+s2+s3;
+
+        node* temp4 = create_newNode(s4);
+        vector <node*> tempVec4;
+        tempVec4.push_back(temp4);
+        leaf->children.insert(leaf->children.end(),tempVec4.begin(),tempVec4.end());
+        temp1->parent=leaf;
+
+        //cout << "IDENT" << endl << untokenedArray[i+1] << endl;
+        //cout << "ASSIGNMENT" << endl << "=" << endl;
+        //cout << "IDENT" << endl << untokenedArray[i+3] << endl;
+        i=i+3;
+        return true;
+    }
+    else if(tokenedArray[i+1]=="IDENT"&&tokenedArray[i+2]=="ASSIGNMENT"&&tokenedArray[i+3]=="FLOAT_LIT")
+    {
+        node* temp = create_newNode("stmt");
+        vector <node*> tempVec;
+        tempVec.push_back(temp);
+        leaf->children.insert(leaf->children.end(),tempVec.begin(),tempVec.end());
+        temp->parent=leaf;
+
+        leaf = tempVec[0];
+
+        node* temp1 = create_newNode("expr_stmt");
+        vector <node*> tempVec1;
+        tempVec1.push_back(temp1);
+        leaf->children.insert(leaf->children.end(),tempVec1.begin(),tempVec1.end());
+        temp1->parent=leaf;
+
+        leaf = tempVec1[0];
+
+        //cout << "stmt" << endl;
+        //cout << "expr_stmt" << endl;
+
+        string s1,s2,s3,s4;
+        s1="IDENT (";
+        s2=untokenedArray[i+1];
+        s3=")";
+        s4=s1+s2+s3;
+
+        node* temp2 = create_newNode(s4);
+        vector <node*> tempVec2;
+        tempVec2.push_back(temp2);
+        leaf->children.insert(leaf->children.end(),tempVec2.begin(),tempVec2.end());
+        temp2->parent=leaf;
+
+        //leaf = tempVec1[0];
+
+        node* temp3 = create_newNode("ASSIGNMENT (=)");
+        vector <node*> tempVec3;
+        tempVec3.push_back(temp3);
+        leaf->children.insert(leaf->children.end(),tempVec3.begin(),tempVec3.end());
+        temp3->parent=leaf;
+
+        //leaf = tempVec1[0];
+
+        s1="FLOAT_LIT (";
+        s2=untokenedArray[i+3];
+        s3=")";
+        s4=s1+s2+s3;
+
+        node* temp4 = create_newNode(s4);
+        vector <node*> tempVec4;
+        tempVec4.push_back(temp4);
+        leaf->children.insert(leaf->children.end(),tempVec4.begin(),tempVec4.end());
+        temp1->parent=leaf;
+
+        //cout << "IDENT" << endl << untokenedArray[i+1] << endl;
+        //cout << "ASSIGNMENT" << endl << "=" << endl;
+        //cout << "IDENT" << endl << untokenedArray[i+3] << endl;
+        i=i+3;
+        return true;
+    }
+    else if(tokenedArray[i+1]=="IDENT"&&tokenedArray[i+2]=="ASSIGNMENT"&&tokenedArray[i+3]=="BOOL_LIT")
+    {
+        node* temp = create_newNode("stmt");
+        vector <node*> tempVec;
+        tempVec.push_back(temp);
+        leaf->children.insert(leaf->children.end(),tempVec.begin(),tempVec.end());
+        temp->parent=leaf;
+
+        leaf = tempVec[0];
+
+        node* temp1 = create_newNode("expr_stmt");
+        vector <node*> tempVec1;
+        tempVec1.push_back(temp1);
+        leaf->children.insert(leaf->children.end(),tempVec1.begin(),tempVec1.end());
+        temp1->parent=leaf;
+
+        leaf = tempVec1[0];
+
+        //cout << "stmt" << endl;
+        //cout << "expr_stmt" << endl;
+
+        string s1,s2,s3,s4;
+        s1="IDENT (";
+        s2=untokenedArray[i+1];
+        s3=")";
+        s4=s1+s2+s3;
+
+        node* temp2 = create_newNode(s4);
+        vector <node*> tempVec2;
+        tempVec2.push_back(temp2);
+        leaf->children.insert(leaf->children.end(),tempVec2.begin(),tempVec2.end());
+        temp2->parent=leaf;
+
+        //leaf = tempVec1[0];
+
+        node* temp3 = create_newNode("ASSIGNMENT (=)");
+        vector <node*> tempVec3;
+        tempVec3.push_back(temp3);
+        leaf->children.insert(leaf->children.end(),tempVec3.begin(),tempVec3.end());
+        temp3->parent=leaf;
+
+        //leaf = tempVec1[0];
+
+        s1="BOOL_LIT (";
+        s2=untokenedArray[i+3];
+        s3=")";
+        s4=s1+s2+s3;
+
+        node* temp4 = create_newNode(s4);
+        vector <node*> tempVec4;
+        tempVec4.push_back(temp4);
+        leaf->children.insert(leaf->children.end(),tempVec4.begin(),tempVec4.end());
+        temp1->parent=leaf;
+
+        //cout << "IDENT" << endl << untokenedArray[i+1] << endl;
+        //cout << "ASSIGNMENT" << endl << "=" << endl;
+        //cout << "IDENT" << endl << untokenedArray[i+3] << endl;
+        i=i+3;
+        return true;
+    }
     else if(tokenedArray[i+1]=="IDENT"&&tokenedArray[i+2]=="ASSIGNMENT"&&tokenedArray[i+3]=="IDENT")
     {
         node* temp = create_newNode("stmt");
