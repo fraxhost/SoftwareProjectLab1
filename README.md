@@ -16,34 +16,7 @@ This project involves the development of a lexical analyzer and an abstract synt
 2. **AST Generation**:
     - Input: `Lexing.txt` (tokens)
     - Output: AST (abstract syntax tree)
-    - Process: `AST_nw.exe` reads the tokens from `Lexing.txt` and generates an AST.
-
-## Installation
-To set up and run the project, follow these steps:
-
-1. Clone the repository:
-    ```bash
-    git clone https://github.com/fraxhost/SoftwareProjectLab1.git
-    cd SoftwareProjectLab1
-    ```
-
-2. Compile the lexical analyzer:
-    ```bash
-    g++ -o Lexing Lexing.cpp
-    ```
-
-3. Ensure `AST_nw.exe` is in the project directory.
-
-## Usage
-1. Run the lexical analyzer to generate tokens:
-    ```bash
-    ./Lexing myCode.txt
-    ```
-
-2. Run the AST generator to create the abstract syntax tree:
-    ```bash
-    ./AST_nw.exe Lexing.txt
-    ```
+    - Process: `AST_new.cpp` reads the tokens from `Lexing.txt` and generates an AST.
 
 ## Technologies Used
 - **C++**: For the lexical analyzer and AST generator.
