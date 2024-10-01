@@ -46,5 +46,4 @@ To set up and run the project, follow these steps:
     ```
 
 ## Technologies Used
-- **C++**: For the lexical analyzer (`Lexing.cpp`).
-- **Executable**: `AST_nw.exe` for generating the AST.
+- **C++**: For the lexical analyzer and AST generator.
